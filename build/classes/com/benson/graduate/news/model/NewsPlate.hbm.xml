@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-26 15:25:41 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.benson.graduate.news.model.NewsPlate" table="news_plate">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="plateName" type="java.lang.String">
+            <column name="plate_name" />
+        </property>
+        <property name="newsType" type="java.lang.Integer">
+            <column name="news_type" />
+        </property>
+        <many-to-one name="newsPlate" class="com.benson.graduate.news.model.NewsPlate" lazy="false">
+            <column name="plate_pid" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

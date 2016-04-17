@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-8-19 14:53:44 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.benson.graduate.sys.model.Organization" table="sys_organization">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="icon" type="java.lang.String">
+            <column name="ICON" />
+        </property>
+        <many-to-one name="organization" class="com.benson.graduate.sys.model.Organization" lazy="false">
+            <column name="PARENT_ID" />
+        </many-to-one>
+        <set name="organizations" table="ORGANIZATION" inverse="false" lazy="true">
+            <key>
+                <column name="ORGANIZATION_ID" />
+            </key>
+            <one-to-many class="com.benson.graduate.sys.model.Organization" />
+        </set>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION" />
+        </property>
+    </class>
+</hibernate-mapping>

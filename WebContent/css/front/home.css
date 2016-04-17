@@ -1,0 +1,91 @@
+@charset "utf-8";
+
+
+/*home*/
+.home{ width:100%; height:auto;}
+
+/*top*/
+.home .top{ width:1200px; height:150px;margin:0 auto; border-bottom: 0;}
+.home .top_logo{height:100px; overflow:hidden;}
+
+
+
+
+.home .top_menu { width:1200px; height:50px;font-size:16px; overflow:hidden;}
+.drop_menu{ width:240px; z-index:9999; position:absolute; float:left; background-color:#222; background:rgba(0,20,50,0.8);}
+.drop_menu dd{ height:64px;  border-bottom:1px solid #212121;border-top:1px solid #37404f;padding-left:19px;}
+.drop_menu  dt{ height:50px;background-color:#183884; line-height:50px;  color:#fff;}
+.drop_menu  dt a{color:#fff;}
+.drop_menu  dd:last-child{ border-bottom:0;}
+.drop_menu  dt .list_all{ display:block; width:16px; height:14px;background:url(../images/list.png) no-repeat  20px center; padding:19px 20px 17px 20px; float:left;}
+.drop_menu  dd h3{ display:block; padding-top:15px;}
+.drop_menu  dd h3 a{ font-size:16px; height:17px; line-height:100%; font-weight:normal; color:#fff;background:url(../images/list_arr.png) no-repeat  195px 0px; display:block;}
+.drop_menu  dd a { font-size:12px;color:#ddd; padding-right:9px;}
+.drop_menu  dd a:hover{ color:#fff;}
+.top_menu .list{ display:inline-block;  height:35px; margin-top:5px; margin-left:25px;width:auto; height:39px; float:left;padding-left:240px;}
+.top_menu .list li{ float:left; position:relative; text-align:center; color:#ccc; font-size:24px; font-family:arial; line-height:42px;}
+.top_menu .list a{ font-size:16px; color:#333; text-align:center;padding:0 15px; display:block;font-family:Microsoft Yahei;}
+.top_menu .list a.current,.top_menu .list a:hover{ color:#f80}
+.top_menu .list a i{ font-size:12px; color:#666;-webkit-text-size-adjust:none;-webkit-transform:scale(0.66);font-style:normal;display:block;
+}
+.cont_menu{ width:auto; height:28px; float:right; padding:11px 0;}
+.cont_menu i{display:inline-block;width:28px; height:28px; background:url(../images/tel_red.png);}
+.cont_menu span{height:28px; color:#999; font-size:24px; line-height:28px; float:right; text-indent:12px;}
+.cont_menu em{color:#183884;}
+
+/*banner*/
+#banner{width:100%;height:400px; position:relative; overflow:hidden;}
+.bann_code{width:1200px; height:400px;position: absolute; z-index:9999;color:#333; left:50%; margin-left:360px;}
+.bann_code ul { margin-top:55px; display:block;height:48px; border-bottom:1px solid #ddd; box-sizing:border-box; background:#fff; background:rgba(255,255,255,.9); width:240px;}
+.bann_code ul li{ float:left; display:block; width:120px; height:48px; line-height:48px; text-align:center;}
+.bann_code ul li.select{border-bottom:2px solid #183884; box-sizing:border-box;}
+.bann_code .tab_cont img{ width:200px; height:200px;}
+.bann_code .tab_cont{ min-height:auto; padding:0;padding: 20px;background:#fff; background:rgba(255,255,255,.9); width:200px; height:200px;}
+#full-screen-slider { position:relative}
+#slides { display:block; width:100%; height:400px;position:relative}
+#slides li { display:block; width:100%; height:100%;position:absolute}
+#pagination { display:block; position:absolute; left:50%; bottom:15px; z-index:9900;  padding:5px 15px 5px 0; margin-left:-72px}
+#pagination li { display:block;width:40px; height:4px; float:left; margin-left:10px;  background:#FFF; background:rgba(255,255,255,0.5);  box-shadow:0 0 4px rgba(0,0,0,0.3)}
+#pagination li a { display:block; width:100%; height:100%; padding:0; margin:0; text-indent:-9999px;}
+#pagination li.current { background:#fff; }
+
+
+/*news*/
+.news_cont{ width:1200px; margin:auto; padding-top:40px;}
+.center{ width:460px; float:right;}
+.side{ float:right; width:338px; overflow:hidden; border:1px solid #ddd; background:#f9f9f9; height:326px;}
+.news_main{width:830px; overflow:hidden; float:left;}
+.side h3{ width:320px; display:block; margin:0px auto 0px auto; background-position:left -238px; height:44px;}
+.side .new_list{ width:310px; margin:0 auto 0px auto;}
+.side .new_list li{ overflow:hidden; white-space:nowrap; overflow:hidden; }
+.side .new_list li a{ float:none; display:block;width:310px; overflow:hidden; text-overflow:ellipsis; color:#666;}
+.new_list{ display:block; padding:5px 0 5px 0;}
+.new_list dd,.new_list li{ overflow:hidden; white-space:nowrap; line-height:36px; height:36px; list-style:none; overflow:hidden; font-size:14px;zoom:1; border-bottom:1px dotted #ddd;}
+
+.news_main dl.new_list{ }
+.news_main dl.new_list dt{ float:left; width:120px; text-align:left; padding-top:5px;}
+.news_main dl.new_list dt img{  background:#fff;  width:112px; height:115px; display:block; margin-top:5px;}
+.news_main dl.new_list dd a{ font-size:14px;}
+.new_list dd a,.new_list li a{ overflow:hidden; text-overflow:ellipsis; color:#333;}
+.new_list dd a:hover,.new_list li a:hover{color:#f80;}
+.new_list dd, .new_list li{margin:0;overflow:hidden; text-overflow:ellipsis;}
+.new_list li span{ float:right; color:#999;}
+
+
+.picnews{background:#f7f7f7; float:left;width: 340px; border:1px solid #ccc;}
+.picnews dt{ display:block; line-height:44px; font-size:22px; padding-left:10px;}
+#hotpic { width: 320px; height: 280px; overflow: hidden; margin:auto;}
+#NewsPic { position: relative; width: 318px; height: 240px; overflow: hidden;  }
+#NewsPic a { overflow: visible; border: 0; text-decoration: none; }
+#NewsPic img { position: absolute; left: 0; top: 0; width:320px; height:240px;}
+#NewsPic .Nav { position: absolute; height: 13px; line-height: 14px; bottom: 0; right: 0; }
+#NewsPic .Nav span { font-size: 12px; font-weight: 400; color: #FFF; float: right; display: block; width: 24px; text-align: center; background: #000; border-left: solid 1px #FFF; cursor: pointer; }
+#NewsPic .Nav span.Normal { color: #FFF; background: #000; filter: Alpha(opacity=50); opacity: .5; }
+#NewsPic .Nav span.Cur { background: #ce0609; color: #FFF; }
+#NewsPicTxt { position: relative; height: 22px;margin: 0; padding-top: 4px; text-align: center; font-size: 14px; margin-left: auto; margin-right: auto; margin-top: 3px; }
+#NewsPicTxt a:link, #NewsPicTxt a:visited {  color: #333; text-decoration: none; }
+#NewsPicTxt a:hover { color: red; }
+
+.news_cont h3{ height:44px; line-height:44px; display:block;background:url(../images/skin.gif) left -44px repeat-x; overflow:hidden; }
+.news_cont h3 span{ float:left; font-size:22px;  text-align:center;background:url(../images/skin.gif) right -80px  no-repeat;}
+.news_cont h3 a{ float:right; color:#999; font-weight:normal; display:inline; font-size:12px; width:60px; text-align:center;font-family:simsun;}

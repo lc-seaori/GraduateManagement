@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-8-5 18:35:28 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.benson.graduate.company.model.RecruitmentInfo" table="company_recruitment_info">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="position" type="java.lang.String">
+            <column name="POSITION" />
+        </property>
+        <property name="monthlySalary" type="java.lang.Integer">
+            <column name="MONTHLY_SALARY" />
+        </property>
+        <property name="workType" type="java.lang.Integer">
+            <column name="WORK_TYPE" />
+        </property>
+        <property name="industryType" type="java.lang.Integer">
+            <column name="INDUSTRY_TYPE" />
+        </property>
+        <property name="educationType" type="java.lang.Integer">
+            <column name="EDUCATION_TYPE" />
+        </property>
+        <property name="hireCount" type="int">
+            <column name="HIRE_COUNT" />
+        </property>
+        <property name="releaseTime" type="java.util.Date">
+            <column name="RELEASE_TIME" />
+        </property>
+        <property name="endTime" type="java.util.Date">
+            <column name="END_TIME" />
+        </property>
+        <property name="positionDescription" type="java.lang.String">
+            <column name="POSITION_DESCRIPTION" />
+        </property>
+        <many-to-one name="recruitmentUnit" class="com.benson.graduate.company.model.RecruitmentUnit" lazy="false">
+            <column name="RECRUITMENTUNIT_ID" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

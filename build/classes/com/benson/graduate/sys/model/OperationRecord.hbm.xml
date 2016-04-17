@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-9-7 18:50:17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.benson.graduate.sys.model.OperationRecord" table="sys_operation_record">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="operationPerson" type="java.lang.String">
+            <column name="OPERATION_PERSON" />
+        </property>
+        <property name="operationName" type="java.lang.String">
+            <column name="OPERATION_NAME" />
+        </property>
+        <property name="operationUrl" type="java.lang.String">
+            <column name="OPERATION_URL" />
+        </property>
+        <property name="operationDescription" type="java.lang.String">
+            <column name="OPERATION_DESCRIPTION" />
+        </property>
+        <property name="operationTime" type="java.util.Date">
+            <column name="OPERATION_TIME" />
+        </property>
+    </class>
+</hibernate-mapping>

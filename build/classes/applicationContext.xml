@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!--导入资源文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- 扫描的包，Spring注入 -->
+	<context:component-scan base-package="com.benson.graduate.*.dao,com.benson.graduate.*.service,com.benson.graduate.*.action"/>
+	<!--配置c3p0数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="user" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="driverClass" value="${jdbc.driverClass}" />
+		<property name="jdbcUrl" value="${jdbc.jdbcUrl}" />
+
+		<property name="initialPoolSize" value="${jdbc.initPoolSize}" />
+		<property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+	</bean>
+
+	<!--配置SessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<!-- <property name="mappingLocations" value="classpath:com/benson/graduate/stu/model/*.hbm.xml"/> -->
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:com/benson/graduate/stu/model/*.hbm.xml</value>
+				<value>classpath:com/benson/graduate/sys/model/*.hbm.xml</value>
+				<value>classpath:com/benson/graduate/company/model/*.hbm.xml</value>
+				<value>classpath:com/benson/graduate/news/model/*.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!--m.这时候可以启动项目，会自动产生一些数据库表，然后可以自行添加数据 n.在applicationContext.xml配置文件中添加声明式事务 -->
+	<!--1.配置hibernate的事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<!--2.配置事务属性 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- 写操作 -->
+			<!-- propagation是事务传播，require，如果当前线程不存在事务，就帮我新开一个事务，如果存在，就使用这个事务 -->
+			<!-- isolation是隔离级别 -->
+			<tx:method name="save*" propagation="REQUIRED" isolation="DEFAULT"/>
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="delete*" propagation="REQUIRED"/>
+			<tx:method name="remove*" propagation="REQUIRED"/>
+			<tx:method name="batch*" propagation="REQUIRED"/>
+			
+			<!-- 读操作 -->
+			<tx:method name="load*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+			
+			<tx:method name="*" propagation="REQUIRED" isolation="DEFAULT"/>
+		</tx:attributes>
+	</tx:advice>
+	<!--3.配置事务切入点 再把事务属性和事务切入点关联起来 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.benson.graduate.*.service.*.*(..))"
+			id="txPointcut" />
+		<!--将事务属性和事务切入点关联起来 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
+	</aop:config>
+	
+</beans>

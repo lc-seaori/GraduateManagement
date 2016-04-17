@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-8-19 14:53:44 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.benson.graduate.sys.model.Role" table="sys_role">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="isdefault" type="java.lang.Integer">
+            <column name="ISDEFAULT" />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION" />
+        </property>
+        <set name="auths" table="sys_role_auth" inverse="false" lazy="false" cascade="save-update">
+            <key>
+                <column name="ROLE_ID" />
+            </key>
+            <many-to-many column="AUTH_ID" class="com.benson.graduate.sys.model.Auth" />
+        </set>
+        <set name="users" table="sys_user_role" inverse="false" lazy="true">
+            <key>
+                <column name="ROLE_ID" />
+            </key>
+            <many-to-many column="USER_ID" class="com.benson.graduate.sys.model.User" />
+        </set>
+    </class>
+</hibernate-mapping>

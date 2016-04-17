@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-8-5 18:35:28 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.benson.graduate.company.model.RecruitmentUnit" table="company_employing_unit">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="recruitmentType" type="java.lang.Integer">
+            <column name="RECRUITMENT_TYPE" />
+        </property>
+        <property name="unitCode" type="java.lang.String">
+            <column name="UNIT_CODE" />
+        </property>
+        <property name="unitName" type="java.lang.String">
+            <column name="UNIT_NAME" />
+        </property>
+        <property name="unitAddress" type="java.lang.String">
+            <column name="UNIT_ADDRESS" />
+        </property>
+        <property name="unitType" type="java.lang.Integer">
+            <column name="UNIT_TYPE" />
+        </property>
+        <property name="unitContantPerson" type="java.lang.String">
+            <column name="UNIT_CONTANT_PERSON" />
+        </property>
+        <property name="unitContantPhone" type="java.lang.String">
+            <column name="UNIT_CONTANT_PHONE" />
+        </property>
+        <property name="unitDescription" type="java.lang.String">
+            <column name="UNIT_DESCRIPTION" />
+        </property>
+    </class>
+</hibernate-mapping>

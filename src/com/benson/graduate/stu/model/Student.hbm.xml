@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-26 15:25:41 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.benson.graduate.stu.model.Student" table="stu_student">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="code" type="java.lang.String">
+            <column name="CODE" />
+        </property>
+        <property name="schoolStatus" type="java.lang.Integer">
+            <column name="SCHOOL_STATUS" />
+        </property>
+        <!-- 映射学生与学院单向n-1的关系 -->
+        <many-to-one name="department" class="com.benson.graduate.stu.model.Department" lazy="false">
+            <column name="DEPARTMENT_ID" />
+        </many-to-one>
+        <!-- 映射学生与班别单向n-1的关系 -->
+        <many-to-one name="clazz" class="com.benson.graduate.stu.model.Clazz" lazy="false">
+            <column name="CLAZZ_ID" />
+        </many-to-one>
+        <!-- 映射学生与学生基本信息单向n-1关联且增加唯一约束相同 （相当于单向1-1关联） -->
+        <many-to-one name="studentInfo" class="com.benson.graduate.stu.model.StudentInfo" lazy="false">
+            <column name="STUDENTINFO" unique="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

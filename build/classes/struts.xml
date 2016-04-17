@@ -1,0 +1,381 @@
+<!DOCTYPE struts PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+          "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 配置Struts 2应用的字符集 -->
+	<constant name="struts.i18n.encoding" value="UTF-8"/>
+    <package name="graduateMangement" namespace="/" extends="struts-default,json-default,jfreechart-default">
+    	<interceptors>
+    		<!-- prepare拦截器 -->
+    		<interceptor-stack name="myStack">
+    			<interceptor-ref name="paramsPrepareParamsStack">
+    				<!-- 不调用prepare()方法 -->
+					<param name="prepare.alwaysInvokePrepare">false</param>
+					<!-- 返回结果 之前更新model，重新压入栈顶-->
+					<!-- <param name="modelDriven.refreshModelDrivenBeforeResult">true</param> -->
+				</interceptor-ref>
+    		</interceptor-stack>
+    		<!-- session拦截器 -->
+    		<interceptor name="sessionInterceptor" class="com.benson.graduate.interceptors.SessionInterceptor" />
+    		<interceptor-stack name="sessionStack">
+				<interceptor-ref name="myStack"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="sessionInterceptor">
+					<param name="excludeMethods">doNotNeedSession_*</param>
+				</interceptor-ref>
+			</interceptor-stack>
+			<!-- 权限拦截器 -->
+			<interceptor name="authInterceptor" class="com.benson.graduate.interceptors.AuthInterceptor" />
+			<interceptor-stack name="authStack">
+				<interceptor-ref name="sessionStack"></interceptor-ref>
+				<interceptor-ref name="authInterceptor">
+					<param name="excludeMethods">doNotNeedSession_*,doNotNeedAuth_*</param>
+				</interceptor-ref>
+			</interceptor-stack>
+    	</interceptors>
+    	
+    	<!-- 使用新的拦截器栈 -->
+    	<default-interceptor-ref name="authStack"></default-interceptor-ref>
+    	
+    	<global-results>
+			<result name="noSecurity">/WEB-INF/views/error/noSecurity.jsp</result>
+			<result name="noSession">/WEB-INF/views/error/noSession.jsp</result>
+		</global-results> 
+    	
+    	<!-- 前台首页 -->
+    	<action name="front_*" class="homeAction" method="{1}">
+    		<result name="homeIndex">/WEB-INF/views/front/home_index.jsp</result>
+    		<result name="login">/WEB-INF/views/login.jsp</result>
+    		<result name="backstage">/WEB-INF/views/index.jsp</result>
+    	</action>
+    	
+    	<!-- 新闻板块管理 -->
+    	<action name="newsplate_*" class="newsPlateAction" method="{1}">
+    		<result name="mainPage">/WEB-INF/views/news/news_plate.jsp</result>
+    		<result name="editNewsPlate">/WEB-INF/views/news/newsplate_add_update.jsp</result>
+    	</action>
+    	
+    	<!-- 新闻管理 -->
+    	<action name="newsnn_*" class="newsNnAction" method="{1}">
+    		<param name="allowTypes">image/gif,image/png,image/bmp,image/pjpeg,image/jpg,image/jpeg</param>
+    		<result name="mainPage">/WEB-INF/views/news/news_nn.jsp</result>
+    		<result name="editNewsNn">/WEB-INF/views/news/newsnn_add_update.jsp</result>
+    	</action>
+    	
+    	
+    	<!-- 学生源信息 -->
+    	<!-- 显示学生源信息列表的action -->
+    	<action name="StudentInfo_List_*" class="studentInfoListAction" method="{1}">
+    		<result name="listPage">/WEB-INF/views/stu/studentInfoList.jsp</result>
+    		<result name="departmentAduitListPage">/WEB-INF/views/stu/departmentStudentInfoAduitList.jsp</result>
+    		<result name="schoolAduitListPage">/WEB-INF/views/stu/schoolStudentInfoAduitList.jsp</result>
+    	</action>
+    	<!-- 添加新的学生源信息的action -->
+    	<action name="StudentInfo_AddNewInfo_*" class="studentInfoAddNewInfoAction" method="{1}">
+    		<result name="addStudentInfoPage">/WEB-INF/views/stu/addStudentInfo.jsp</result>
+    		<result type="stream" name="ajaxSuccess">
+       			<param name="contentType">text/html</param>
+       			<param name="inputName">inputStream</param>
+       		</result>
+       		<result name="addStudentPage">/WEB-INF/views/stu/addStudent.jsp</result>
+    	</action>
+    	<!-- 编辑学生源信息 action-->
+    	<action name="StudentInfo_EditStuInfo_*" class="studentInfoEditStuInfoAction" method="{1}">
+    		<result name="editStudentInfoPage">/WEB-INF/views/stu/editStudentInfo.jsp</result>
+    	</action>
+    	<!-- 删除学生源信息action -->
+    	<action name="StudentInfo_DelStuInfo_*" class="studentInfoDelStuInfoAction" method="{1}"/>
+    	<!-- 审核学生源信息action（院审和校审） -->
+    	<action name="StudentInfo_AduitStuInfo_*" class="studentInfoAduitStuInfoAction" method="{1}">
+    		<result name="success" type="redirectAction">
+				<param name="actionName">StudentInfo_AddNewInfo_toAddStudentPage</param>
+				<param name="namespace">/</param>
+				<param name="id">${id}</param>
+			</result>
+    	</action>
+    	
+    	
+    	<!-- 学生信息Action -->
+    	<action name="Student_*" class="studentAction" method="{1}">
+    		<result name="studentListPage">/WEB-INF/views/stu/studentList.jsp</result>
+    		<result name="editStudentPage">/WEB-INF/views/stu/editStudent.jsp</result>
+    	</action>
+    	<action name="StudentDetials_*" class="studentInfoDetialsAction" method="{1}">
+    		<result name="studentInfoDetialsPage">/WEB-INF/views/stu/studentInfoDetials.jsp</result>
+    	</action>
+    	
+    	
+    	<!-- 学生就业信息Action -->
+    	<!-- 就业信息列表Action -->
+    	<action name="GraduateInfo_List_*" class="graduateInfoListAction" method="{1}">
+    		<result name="graduateInfoListPage">/WEB-INF/views/stu/graduateInfoList.jsp</result>
+    		<result name="departmentAduitListPage">/WEB-INF/views/stu/departmentGraduateInfoAduitList.jsp</result>
+    		<result name="schoolAduitListPage">/WEB-INF/views/stu/schoolGraduateInfoAduitList.jsp</result>
+    	</action>
+    	<!-- 编辑就业信息Action -->
+    	<action name="GraduateInfo_Edit_*" class="editGraduateInfoAction" method="{1}">
+    		<result name="editGraduateInfoPage">/WEB-INF/views/stu/editGraduateInfo.jsp</result>
+    	</action>
+    	<!-- 删除就业信息Action -->
+    	<action name="GraduateInfo_Del_*" class="delGraduateInfoAction" method="{1}"></action>
+    	<!-- 添加就业信息Action -->
+    	<action name="GraduateInfo_Add_*" class="addGraduateInfoAction" method="{1}">
+    		<result name="addGraduateInfoPage">/WEB-INF/views/stu/addGraduateInfo.jsp</result>
+    		<result name="studentListPage">/WEB-INF/views/stu/otherStuList.jsp</result>
+    	</action>
+    	<!-- 审核就业信息Action -->
+    	<action name="GraduateInfo_Aduit_*" class="aduitGraduateInfoAction" method="{1}"></action>
+    	
+    	
+    	<!-- 用人单位信息管理Action -->
+    	<!-- 用人单位信息列表Action -->
+    	<action name="EmployingUnit_List_*" class="employingUnitListAction" method="{1}">
+    		<result name="empUnitListPage">/WEB-INF/views/company/empUnitList.jsp</result>
+    	</action>
+    	<!-- 添加招聘单位Action -->
+    	<action name="EmployingUnit_Add_*" class="addEmpUnitAction" method="{1}">
+    		<result name="addEmpUnitPage">/WEB-INF/views/company/addEmpUnit.jsp</result>
+    		<result type="stream" name="ajaxSuccess">
+       			<param name="contentType">text/html</param>
+       			<param name="inputName">inputStream</param>
+       		</result>
+    	</action>
+    	<!-- 编辑招聘单位信息Action -->
+    	<action name="EmployingUnit_Edit_*" class="editEmpUnitAction" method="{1}">
+    		<result name="editEmpUnitPage">/WEB-INF/views/company/editEmpUnit.jsp</result>
+    		<result type="stream" name="ajaxSuccess">
+       			<param name="contentType">text/html</param>
+       			<param name="inputName">inputStream</param>
+       		</result>
+    	</action>
+    	<!-- 删除招聘单位信息Action -->
+    	<action name="EmployingUnit_Del_*" class="delEmpUnitAction" method="{1}"></action>
+    	<!-- 得到招聘单位所有的招聘信息Action -->
+    	<action name="EmployingUnit_InfoList_*" class="getRecruitmentInfoListAction" method="{1}">
+    		<result name="recruitmentInfosPage">/WEB-INF/views/company/recruitmentInfos.jsp</result>
+    	</action>
+    	
+    	
+    	<!-- 招聘信息列表Action -->
+    	<action name="RecruitmentInfo_List_*" class="recruitmentInfoListAction" method="{1}">
+    		<result name="recruitmentInfoListPage">/WEB-INF/views/company/recruitmentInfoList.jsp</result>
+    	</action>
+    	<!-- 添加招聘信息Action -->
+    	<action name="RecruitmentInfo_Add_*" class="addRecruitmentInfoAction" method="{1}">
+    		<result name="addRecruitmentInfoPage">/WEB-INF/views/company/addRecruitmentInfo.jsp</result>
+    	</action>
+    	<!-- 编辑招聘信息Action -->
+    	<action name="RecruitmentInfo_Eidt_*" class="editRecruitmentInfoAction" method="{1}">
+    		<result name="editRecruitmentInfoPage">/WEB-INF/views/company/editRecruitmentInfo.jsp</result>
+    	</action>
+    	<!-- 删除招聘信息Action -->
+    	<action name="RecruitmentInfo_Del_*" class="delRecruitmentInfoAction" method="{1}"></action>
+    	
+    	
+    	<!-- 数据管理Action -->
+    	<!-- 显示数据管理页面Action -->
+    	<action name="DataManagement_Show_*" class="showDataManagement" method="{1}">
+    		<result name="dataManagementPage">/WEB-INF/views/data/dataManagement.jsp</result>
+    	</action>
+    	<!-- 导入数据Action -->
+    	<action name="DataManagement_Import_*" class="importDataAction" method="{1}">
+    		<param name="allowTypes">application/excel,application/vnd.ms-excel</param>
+    		<result name="importStuInfoPage">/WEB-INF/views/data/importStuInfo.jsp</result>
+    		<result name="importGraPage">/WEB-INF/views/data/importGra.jsp</result>
+    	</action>
+    	
+    	<!-- 下载学生源信息excel模板Action -->
+    	<action name="DataManagement_DownloadStuInfosFile" class="downStuInfosFileAction">
+    		<!-- 指定被下载文件的位置 -->
+    		<param name="inputPath">/WEB-INF/files/学生源信息模板.xls</param>
+    		<param name="fileName">学生源信息模板.xls</param>
+    		<!-- 配置结果类型为stream的结果 -->
+    		<result type="stream">
+    			<!-- 指定下载文件的文件类型 -->
+    			<param name="contentType">application/excel,application/vnd.ms-excel</param>
+    			<!-- 指定由getStuInfosFile()方法返回被下载文件的InputStream -->
+    			<param name="inputName">stuInfosFile</param>
+    			<!-- 使用经过转码的文件名作为下载文件名，downloadFileName属性对应action类中的方法，getDownloadFileName() -->
+    			<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+    			<param name="bufferSize">4096</param>
+    		</result>
+    	</action>
+    	<!-- 下载学生就业信息excel模板Action -->
+    	<action name="DataManagement_DownloadGrasFile" class="downGrasFileAction">
+    		<!-- 指定被下载文件的位置 -->
+    		<param name="inputPath">/WEB-INF/files/学生就业信息模板.xls</param>
+    		<param name="fileName">学生就业信息模板.xls</param>
+    		<!-- 配置结果类型为stream的结果 -->
+    		<result type="stream">
+    			<!-- 指定下载文件的文件类型 -->
+    			<param name="contentType">application/excel,application/vnd.ms-excel</param>
+    			<!-- 指定由getGrasFile()方法返回被下载文件的InputStream -->
+    			<param name="inputName">grasFile</param>
+    			<!-- 使用经过转码的文件名作为下载文件名，downloadFileName属性对应action类中的方法，getDownloadFileName() -->
+    			<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+    			<param name="bufferSize">4096</param>
+    		</result>
+    	</action>
+    	
+    	<!-- 导出学生源信息Action -->
+    	<action name="DataManagement_ExportStuInfos_*" class="exportStuInfosAction" method="{1}">
+    		<result name="exportStuInfosPage">/WEB-INF/views/data/exportStuInfos.jsp</result>
+    		<param name="fileName">学生源信息数据.xls</param>
+    		<result name="success" type="stream">
+                <!-- 下载文件的类型，如果你不知道是什么格式，可以去 tomcat\conf\web.xml下找 -->  
+                <param name="contentType">application/excel,application/vnd.ms-excel</param>  
+                <!-- 返回流 excelStream为action中的流变量名称 -->  
+                <param name="inputName">excelStream</param>  
+                <!-- attachment 这个位置的参数挺特殊的，可以设置成下载时，是否出现个下载提示框，或者直接下载之类的。  
+                fileName指定生成的文件名字(适合动态生成文件名，比如做报表时，一般都要说是几月的统计数据之类)为action中变量-->  
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+                <param name="bufferSize">4096</param>  
+            </result>  
+    	</action>
+    	
+    	<!-- 导出学生信息Action（包含源信息） -->
+    	<action name="DataManagement_ExportStus_*" class="exportStusAction" method="{1}">
+    		<result name="exportStusPage">/WEB-INF/views/data/exportStus.jsp</result>
+    		<param name="fileName">学生信息数据.xls</param>
+    		<result name="success" type="stream">
+                <!-- 下载文件的类型，如果你不知道是什么格式，可以去 tomcat\conf\web.xml下找 -->  
+                <param name="contentType">application/excel,application/vnd.ms-excel</param>  
+                <!-- 返回流 excelStream为action中的流变量名称 -->  
+                <param name="inputName">excelStream</param>  
+                <!-- attachment 这个位置的参数挺特殊的，可以设置成下载时，是否出现个下载提示框，或者直接下载之类的。  
+                fileName指定生成的文件名字(适合动态生成文件名，比如做报表时，一般都要说是几月的统计数据之类)为action中变量-->  
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+                <param name="bufferSize">4096</param>  
+            </result>  
+    	</action>
+    	
+    	<!-- 导出学生就业信息Action -->
+    	<action name="DataManagement_ExportGraInfos_*" class="exportGraInfosAction" method="{1}">
+    		<result name="exportGraInfosPage">/WEB-INF/views/data/exportGraInfos.jsp</result>
+    		<param name="fileName">学生就业信息数据.xls</param>
+    		<result name="success" type="stream">
+                <!-- 下载文件的类型，如果你不知道是什么格式，可以去 tomcat\conf\web.xml下找 -->
+                <param name="contentType">application/excel,application/vnd.ms-excel</param>  
+                <!-- 返回流 excelStream为action中的流变量名称 -->  
+                <param name="inputName">excelStream</param>  
+                <!-- attachment 这个位置的参数挺特殊的，可以设置成下载时，是否出现个下载提示框，或者直接下载之类的。  
+                fileName指定生成的文件名字(适合动态生成文件名，比如做报表时，一般都要说是几月的统计数据之类)为action中变量-->  
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>  
+    	</action>
+    	
+    	<!-- 导出招聘公司的所有招聘信息Action -->
+    	<action name="DataManagement_ExportRecInfos_*" class="exportRecInfosAction" method="{1}">
+    		<result name="exportRecInfosPage">/WEB-INF/views/data/exportRecInfos.jsp</result>
+    		<param name="fileName">招聘信息数据.doc</param>
+    		<result name="success" type="stream">
+                <!-- 下载文件的类型，如果你不知道是什么格式，可以去 tomcat\conf\web.xml下找 -->  
+                <param name="contentType">application/vnd.ms-word</param>  
+                <!-- 返回流 excelStream为action中的流变量名称 -->  
+                <param name="inputName">wordStream</param>  
+                <!-- attachment 这个位置的参数挺特殊的，可以设置成下载时，是否出现个下载提示框，或者直接下载之类的。  
+                fileName指定生成的文件名字(适合动态生成文件名，比如做报表时，一般都要说是几月的统计数据之类)为action中变量-->  
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+                <param name="bufferSize">4096</param>  
+            </result>  
+    	</action>
+    	
+    	<!-- 数据管理 -->
+    	<!-- 毕业率、就业率柱状图、折线图、饼图 Action-->
+    	<action name="DataManagement_Graph_*" class="showGraphAction" method="{1}">
+    		<result name="showGraphPage">/WEB-INF/views/data/showGraph.jsp</result>
+    		<result name="success" type="chart">
+    			<param name="height">400</param>
+    			<param name="width">550</param>
+    		</result>
+    	</action>
+    	
+    	<!-- 毕业率和就业率列表Action -->
+    	<action name="DataManagement_*" class="workAndGraduateListAction" method="{1}">
+    		<result name="chooseTimePage">/WEB-INF/views/data/chooseTime.jsp</result>
+    		<result name="workAndGraduateListPage">/WEB-INF/views/data/workAndGraduateList.jsp</result>
+    	</action>
+    	
+    	<!-- 组织部门Action -->
+    	<action name="Organization_*" class="organizationAction" method="{1}">
+    		<result name="orgListPage">/WEB-INF/views/sys/organizationList.jsp</result>
+    		<result name="addOrganizationPage">/WEB-INF/views/sys/addOrganization.jsp</result>
+    		<result name="editOrganizationPage">/WEB-INF/views/sys/editOrganization.jsp</result>
+    	</action>
+    	
+    	<!-- 用户Action -->
+    	<action name="User_*" class="userAction" method="{1}">
+    		<result name="index">/WEB-INF/views/front/home_index.jsp</result>
+    		<result name="relogin">/WEB-INF/views/login.jsp</result>
+    		<result name="editUserPwd">/WEB-INF/views/sys/editUserPwd.jsp</result>
+    		<!-- 用户列表result -->
+    		<result name="userListPage">/WEB-INF/views/sys/userList.jsp</result>
+    	</action>
+    	
+    	<!-- 加载验证码图片Action -->
+    	<action name="System_Image_*" class="createImageAction" method="{1}">
+    		<result name="success" type="stream">
+    			<param name="contentType">image/jpeg</param>
+    			<param name="inputName">imageStream</param>
+    			<param name="bufferSize">2048</param>
+    		</result>
+    	</action>
+    	
+    	<!-- 用户添加Action -->
+    	<action name="System_AddUser_*" class="addUserAction" method="{1}">
+    		<result name="addUserPage">/WEB-INF/views/sys/addUser.jsp</result>
+    	</action>
+    	<!-- 用户编辑Action -->
+    	<action name="System_EditUser_*" class="editUserAction" method="{1}">
+    		<result name="editUserPage">/WEB-INF/views/sys/editUser.jsp</result>
+    	</action>
+    	
+    	<!-- 权限Action -->
+ 		<action name="System_Auth_*" class="authAction" method="{1}">
+ 			<result name="authListPage">/WEB-INF/views/sys/authList.jsp</result>
+ 			<result name="addAuthPage">/WEB-INF/views/sys/addAuth.jsp</result>
+ 			<result name="editAuthPage">/WEB-INF/views/sys/editAuth.jsp</result>
+ 		</action>   	
+ 		
+    	<!-- 角色Action -->
+    	<action name="System_Role_*" class="roleAction" method="{1}">
+    		<result name="roleListPage">/WEB-INF/views/sys/roleList.jsp</result>
+    		<result name="addRolePage">/WEB-INF/views/sys/addRole.jsp</result>
+    		<result name="editRolePage">/WEB-INF/views/sys/editRole.jsp</result>
+    		<!-- 角色授权页面 -->
+    		<result name="grentAuthToRolePage">/WEB-INF/views/sys/grentAuthToRole.jsp</result>
+    	</action>
+    	
+    	<!-- 学院设置Action -->
+    	<action name="System_Department_*" class="departmentAction" method="{1}">
+    		<result name="depListPage">/WEB-INF/views/sys/departmentList.jsp</result>
+    		<!-- 添加和编辑页面 -->
+    		<result name="addDepPage">/WEB-INF/views/sys/addDepartment.jsp</result>
+    		<result name="editDepPage">/WEB-INF/views/sys/editDepartment.jsp</result>
+    	</action>
+    	
+    	<!-- 专业方向设置Action -->
+    	<action name="System_Major_*" class="majorAction" method="{1}">
+    		<result name="majorListPage">/WEB-INF/views/sys/majorFieldList.jsp</result>
+    		<!-- 添加和编辑页面 -->
+    		<result name="addMajorPage">/WEB-INF/views/sys/addMajorField.jsp</result>
+    		<result name="editMajorPage">/WEB-INF/views/sys/editMajorField.jsp</result>
+    	</action>
+    	
+    	<!-- 班级设置Action -->
+    	<action name="System_Clazz_*" class="clazzAction" method="{1}">
+    		<result name="clazzListPage">/WEB-INF/views/sys/clazzList.jsp</result>
+    		<!-- 添加或编辑 -->
+    		<result name="addClazzPage">/WEB-INF/views/sys/addClazz.jsp</result>
+    		<result name="editClazzPage">/WEB-INF/views/sys/editClazz.jsp</result>
+    	</action>
+    	
+    	<!-- 用户操作记录Action -->
+    	<action name="System_Record_*" class="operRecordAction" method="{1}">
+    		<result name="operRecordListPage">/WEB-INF/views/sys/operRecordList.jsp</result>
+    	</action>
+    </package>
+  	
+    <package name="baseActionPackage" extends="struts-default" namespace="/"></package>
+</struts>

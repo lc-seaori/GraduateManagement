@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-26 15:25:41 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.benson.graduate.stu.model.GraduateInfo" table="stu_graduate_info">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="departmentGAduitStatus" type="java.lang.Integer">
+        	<column name="DEPARTMENT_ADUIT_STATUS"></column>
+        </property>
+        <property name="schoolGAduitStatus" type="java.lang.Integer">
+        	<column name="SCHOOL_ADUIT_STATUS"></column>
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="unitName" type="java.lang.String">
+            <column name="UNIT_NAME" />
+        </property>
+        <property name="unitLocation" type="java.lang.String">
+            <column name="UNIT_LOCATION" />
+        </property>
+        <property name="unitType" type="java.lang.Integer">
+            <column name="UNIT_TYPE" />
+        </property>
+        <!-- <property name="graudationSchool" type="java.lang.String">
+            <column name="GRAUDATION_SCHOOL" />
+        </property>
+        <property name="educationType" type="java.lang.Integer">
+            <column name="EDUCATION_TYPE" />
+        </property> -->
+        <property name="unitIndustry" type="java.lang.String">
+            <column name="UNIT_INDUSTRY" />
+        </property>
+        <property name="unitContantPerson" type="java.lang.String">
+            <column name="UNIT_CONTANT_PERSON" />
+        </property>
+        <property name="unitContantPhone" type="java.lang.String">
+            <column name="UNIT_CONTANT_PHONE" />
+        </property>
+        <property name="unitAddress" type="java.lang.String">
+            <column name="UNIT_ADDRESS" />
+        </property>
+        <property name="graduatePhone" type="java.lang.String">
+            <column name="GRADUATE_PHONE" />
+        </property>
+        <property name="applyType" type="java.lang.Integer">
+            <column name="APPLY_TYPE" />
+        </property>
+        <property name="unitPostEncoding" type="java.lang.String">
+            <column name="UNIT_POSTEN_CODING" />
+        </property>
+        <!-- 映射毕业生信息与学生信息单向n-1关联且增加唯一约束相同 （相当于单向1-1关联）-->
+        <many-to-one name="student" class="com.benson.graduate.stu.model.Student" lazy="false">
+            <column name="STUDENT_ID" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>
