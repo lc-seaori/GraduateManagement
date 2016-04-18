@@ -35,6 +35,7 @@ $(function(){
 </body>
 <%@ include file="top2.jsp" %>
 <div class="main">
+	
  	<div class="t2">
 	  	<div class="p_nav">首页<i>&gt;</i>学院新闻</div>
 	  	<span>学院新闻</span>
@@ -47,7 +48,7 @@ $(function(){
  		</dl>
     	<dl class="video_sort"><dt>版块：</dt><span id="plateIdDt"></span></dl>
     </div>
-  	<div class="newslist" id="nn-list">${coOrder.newsName}加载中...</div>
+  	<div class="newslist" id="nn-list">加载中...</div>
 </div>
 <%@ include file="footer.jsp" %>
 </html>

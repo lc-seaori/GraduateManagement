@@ -43,7 +43,7 @@
     	<h1>${nn.title }</h1>
         <div class="author"><i>${nn.createName }</i> 发表于 ${nn.createTime } &nbsp;&nbsp; 关键字：${nn.keyWords } &nbsp;&nbsp; ${nn.viewCount }次浏览
         <ul class="nn_tool">
-    		<li class="video-comments"><a href="/sys/news/nn/comment/${nn.coId}/${nn.nnId}"><i class="i1"></i>评论（0）</a></li>
+    		<li class="video-comments"><a href="javascript:void(0)"><i class="i1"></i>评论（0）</a></li>
     	</ul>
         </div>
         <div class="news_summary"><span>[摘要]</span>${nn.summary}</div>

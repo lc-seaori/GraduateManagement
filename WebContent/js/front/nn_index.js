@@ -1,72 +1,70 @@
 var querySort = 0;
-window.nnPageList = function(pageNumber,platePid,plateId) {
+window.coursePageList = function(pageNumber , typeVal , sortVal) {
 	var $txtSearch = $('#txt-search'),
 	searchkeywords = $.trim($txtSearch.val());
 	if(searchkeywords == $txtSearch.data('prompt') && !$txtSearch.hasClass('black')) {
 		searchkeywords = '';
 	}
+	//解决选定条件之后，分页条件参数为undefined的问题
+	if(typeVal==undefined&&sortVal==undefined){
+		//获取类型值
+		typeVal=$('#dl-query1 dd[class="cur"]').attr('id');
+		typeVal = typeVal.replace('type-','');
+		if(typeVal == '0'){
+			typeVal = '';
+		}
+		//获取排序值
+		sortVal=$('#dl-query2 dd[class="cur"]').attr('id');
+		sortVal = sortVal.replace('sort-','');
+	}
+	
 	var params = {
 		'pageNumber': pageNumber,
-		'pageSize': 10,
-		'searchkeywords': searchkeywords,
-		'orderField': querySort,
-		'plate_pid':platePid,
-		'plate_id':plateId,
-		'mb_client':mb_client,
-		'open_id':open_id,
-		'open_orgs':open_orgs
+		'pageSize': 5,
+		'groupId' : typeVal,
+		'sort' : sortVal
 	};
 
 	$.ajax({
 		type: 'POST',
-		url: BASE + '/sys/enterprise/nn/page/' + coId,
+		url: BASE + '/sys/enterprise/course/page/' + coId,
         data: params,
         dataType: 'html',
         success: function(data) {
-            $('#nn-list').html(data);
+            $('#course_list').html(data);
         }
 	});
 };
 
-function selectquerytype(val){
-	$('.f1 dd').removeClass('cur');
-	$('#pp-' + val).addClass('cur');
-	if(val == 0){
-		window.nnPageList(1,'','');
-		val='NO';
+function selectquerytype(typeVal){
+	$('#dl-query1 dd').removeClass('cur');
+	$('#type-' + typeVal).addClass('cur');
+	var sortVal='';
+	//判断排序值
+	if($('#sort-reg_count').hasClass('cur')){
+		sortVal = 'reg_count';
 	}else{
-		window.nnPageList(1,val,'');
+		sortVal = 'create_time';
 	}
-	var selectHtml='';
-	$.ajax({
-        type: 'POST',
-        url: BASE + '/sys/news/search/plate',
-        data: {'platePid': val},
-        dataType: 'json',
-        success: function(result) {
-        	var obj = eval(result.data);
-        	 $.each(obj, function (i, item) {
-        		 selectHtml +='<dd id="sort-'+item.plateId+'" onclick=selectquerysort("'+item.plateId+'","'+item.platePid+'")>'+item.plateName+'</dd>';
-             });
-        	 $("#plateIdDt").empty();
-        	 $("#plateIdDt").html(selectHtml);
-        }
-    });
-}
-
-function selectquerysort(val,pval){
-	$('.video_sort dd').removeClass('cur');
-	$('#sort-' + val).addClass('cur');
-	window.nnPageList(1,pval,val);
-}
-
-function selectblock(val,pval){
-	$('.nn_block dd').removeClass('cur');
-	$('#pp-' + val).addClass('cur');
-	if(val == 0){
-		window.nnPageList(1,pval,'');
+	if(typeVal == '0'){
+		//全部
+		window.coursePageList(1,'',sortVal);
 	}else{
-		window.nnPageList(1,pval,val);
+		window.coursePageList(1,typeVal,sortVal);
 	}
 }
+
+function selectquerysort(sortVal){
+	$('#dl-query2 dd').removeClass('cur');
+	$('#sort-' + sortVal).addClass('cur');
+	//获取类型值
+	var typeVal = '';
+	typeVal=$('#dl-query1 dd[class="cur"]').attr('id');
+	typeVal = typeVal.replace('type-','');
+	if(typeVal == '0'){
+		typeVal = '';
+	}
+	window.coursePageList(1,typeVal,sortVal);
+}
+
 

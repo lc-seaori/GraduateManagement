@@ -78,6 +78,7 @@
 		    		if (result.success){
 					   	$.messager.alert("操作提示", result.msg,"info");   
 					   	$('#editNewsPlateDialog').dialog('close');
+					   	$('#newsPlateList').datagrid('reload');
 					} else{
 						$.messager.alert("操作提示",result.msg ,"error");
 					}

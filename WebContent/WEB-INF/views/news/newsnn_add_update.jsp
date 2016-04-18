@@ -81,7 +81,7 @@
 			<tr>
 				<td>所述一级新闻版块：</td>
 				<td>
-					<s:select list="#request.platepList" listKey="id" listValue="plateName" headerKey="---请选择版块---" headerValue="---请选择版块---"
+					<s:select list="#request.platepList" listKey="id" listValue="plateName" headerKey="0" headerValue="---请选择版块---"
 					editable="false" id="pPlateSelected" name="plateParentId" style="width: 150px"
 					data-options="panelWidth:'130px', panelHeight:'auto'"></s:select>
 					<span>&nbsp;二级新闻版块：</span>
@@ -134,12 +134,6 @@
 			onSelect : function() {
 				var pSelected = tcSelect.combobox('getValue');
 				if(pSelected!="---请选择版块---"&&pSelected!=null){
-					/* $('#plateSelected').combobox({
-						valueField : "id",
-						textField : "plateName",
-						url : "newsnn_getPlateList.action?plateParentId=" + pSelected,
-						editable : false
-					});		 */
 					$.ajax({
 					     type: 'get',
 					     url: "newsnn_getPlateList.action?plateParentId=" + pSelected ,
@@ -149,19 +143,19 @@
 					    	 	var htmlVal = "";
 					    		if(data!=null && data!=""){
 					    			for(var i=0;i<data.length;i++){
-					    				htmlVal = htmlVal+"<option value="+ data[i].id +">"+ data[i].plateName +"</option>"
+					    				htmlVal = htmlVal+"<option value="+ data[i].id +">"+ data[i].plateName +"</option>";
 					    			}
 					    		}else{
-					    			htmlVal = htmlVal+"<option value='0'>---请选择版块---</option>"
+					    			htmlVal = htmlVal+"<option value='0'>---请选择版块---</option>";
 					    		}
 					    		$('#pSelected').html(htmlVal);
-					    		//alert(data[0].id);
 							}
 					}); 
 				}else{
 					//清空combobox
-					/* $('#plateSelected').combobox('loadData', {});
-					$('#plateSelected').combobox('setValue', '---请选择版块---'); */
+					var htmlVal = "";
+					htmlVal = htmlVal+"<option value='0'>---请选择版块---</option>";
+					$('#pSelected').html(htmlVal);
 				}
 			}
 		});

@@ -46,6 +46,7 @@
     	<action name="front_*" class="homeAction" method="{1}">
     		<result name="homeIndex">/WEB-INF/views/front/home_index.jsp</result>
     		<result name="login">/WEB-INF/views/login.jsp</result>
+    		<result name="nnIndex">/WEB-INF/views/front/nn_index.jsp</result>
     		<result name="backstage">/WEB-INF/views/index.jsp</result>
     	</action>
     	

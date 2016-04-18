@@ -207,6 +207,7 @@ public class System_UserAction extends BaseAction{
 				request.getSession().setAttribute("sessionInfo", sessionInfo);
 				//设置sessio生命周期为15分钟
 				request.getSession().setMaxInactiveInterval(15*60);
+				request.setAttribute("newsPlateList", newsPlateService.findAllRootNewsPlate());
 				request.setAttribute("infosList", recruitmentInfoService.getAllRecruitmentInfos(0, 4));
 				request.setAttribute("unitsList", recruitmentUnitService.findAllRecruitmentUnits());
 				return "index";

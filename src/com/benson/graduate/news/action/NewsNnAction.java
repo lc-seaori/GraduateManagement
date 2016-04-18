@@ -213,8 +213,8 @@ public class NewsNnAction extends BaseAction implements ModelDriven<NewsNn>,Prep
 		return "editNewsNn";
 	}
 	
-	
 	public void uploadImg(){
+		System.out.println("test::::::::::::::::::::::::::::::::::::::::::::::::::");
 		Json json =new Json();
 		//上传到服务器指定路径
 		String realPath = servletContext.getRealPath("/uploadImg");
@@ -250,10 +250,11 @@ public class NewsNnAction extends BaseAction implements ModelDriven<NewsNn>,Prep
 	public String filterTypes(String[] types){
 		// 获取允许上传的所有文件类型
 		String fileType = getUploadContentType();
+		System.out.println(fileType);
 		for (String type : types){
 			System.out.println(type);
 			if (type.equals(fileType)){
-				return null;
+				return "";
 			}
 		}
 		return "nono";
@@ -265,7 +266,7 @@ public class NewsNnAction extends BaseAction implements ModelDriven<NewsNn>,Prep
 		// 分解成字符串数组从而判断当前文件类型是否允许上传
 		String filterResult = filterTypes(getAllowTypes().split(","));
 		// 如果当前文件类型不允许上传
-		if (filterResult != null){
+		if (StringUtil.isNotEmpty(filterResult)){
 			// 添加FieldError
 			System.out.println("类型不支持");
 			Json json =new Json();

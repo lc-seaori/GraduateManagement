@@ -137,7 +137,7 @@
                             	title: 'Tips',
                                 msg: '删除记录成功'
                             });
-                            $('#newsPlateList').datagrid('reload');    // reload the user data
+                            $('#newsPlateList').datagrid('reload');
                         }else {
                         	$.messager.show({    // show error message
                             	title: 'Error',
