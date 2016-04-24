@@ -81,4 +81,5 @@ public class EnumerationType {
 	 * 新闻类型
 	 */
 	public static final int NEWS_TYPE = 15000;
+	
 }

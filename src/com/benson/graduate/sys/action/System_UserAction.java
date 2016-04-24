@@ -1,7 +1,9 @@
 package com.benson.graduate.sys.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -11,12 +13,18 @@ import org.springframework.stereotype.Controller;
 import com.benson.graduate.base.action.BaseAction;
 import com.benson.graduate.base.pagemodel.Json;
 import com.benson.graduate.base.pagemodel.SessionInfo;
+import com.benson.graduate.common.enumeration.EnumerationType;
 import com.benson.graduate.company.service.RecruitmentInfoService;
 import com.benson.graduate.company.service.RecruitmentUnitService;
+import com.benson.graduate.news.model.NewsNn;
+import com.benson.graduate.news.service.NewsNnService;
+import com.benson.graduate.news.service.NewsPlateService;
 import com.benson.graduate.sys.model.Auth;
+import com.benson.graduate.sys.model.EnumerationValue;
 import com.benson.graduate.sys.model.Role;
 import com.benson.graduate.sys.model.User;
 import com.benson.graduate.sys.service.AuthService;
+import com.benson.graduate.sys.service.EnumerationValueService;
 import com.benson.graduate.sys.service.RoleService;
 import com.benson.graduate.sys.service.UserService;
 import com.benson.graduate.utils.MD5Util;
@@ -52,12 +60,27 @@ public class System_UserAction extends BaseAction{
 	public void setRecruitmentInfoService(RecruitmentInfoService recruitmentInfoService) {
 		this.recruitmentInfoService = recruitmentInfoService;
 	}
-
 	private RecruitmentUnitService recruitmentUnitService;
 	@Resource(name="recruitmentUnitService")
 	public void setRecruitmentUnitService(
 			RecruitmentUnitService recruitmentUnitService) {
 		this.recruitmentUnitService = recruitmentUnitService;
+	}
+	private NewsPlateService newsPlateService;
+	@Resource(name="newsPlateService")
+	public void setNewsPlateService(NewsPlateService newsPlateService) {
+		this.newsPlateService = newsPlateService;
+	}
+	private NewsNnService newsNnService ;
+	@Resource(name="newsNnService")
+	public void setNewsNnService(NewsNnService newsNnService) {
+		this.newsNnService = newsNnService;
+	}
+	private EnumerationValueService enumerationValueService;
+	@Resource(name="enumerationValueService")
+	public void setEnumerationValueService(
+			EnumerationValueService enumerationValueService) {
+		this.enumerationValueService = enumerationValueService;
 	}
 	
 	private String loginname;
@@ -158,7 +181,24 @@ public class System_UserAction extends BaseAction{
 	 * @return
 	 */
 	public String doNotNeedSession_login(){
-		System.out.println("测试  :"+loginname+""+password);
+		
+		//新闻导航
+		request.setAttribute("newsPlateList", newsPlateService.findAllRootNewsPlate());
+		//招聘信息和招聘单位信息
+		request.setAttribute("infosList", recruitmentInfoService.getAllRecruitmentInfos(0, 4));
+		request.setAttribute("unitsList", recruitmentUnitService.findAllRecruitmentUnits());
+		//其他新闻类
+		Map<Integer,List<NewsNn>> nnMap = new HashMap<Integer, List<NewsNn>>();
+		Map<Integer,String> enNameMap = new HashMap<Integer, String>();
+		List<EnumerationValue> newsTypeList = enumerationValueService.findAllEnumerationValuesByName(EnumerationType.NEWS_TYPE);
+		for(EnumerationValue enVal : newsTypeList){
+			List<NewsNn> nnList = newsNnService.findByNewsPlateId(enVal.getId());
+			nnMap.put(enVal.getId(), nnList);
+			enNameMap.put(enVal.getId(), enVal.getName());
+		}
+		request.setAttribute("nnMap", nnMap);
+		request.setAttribute("newsTypeList", newsTypeList);
+		request.setAttribute("enNameMap", enNameMap);
 		
 		if(request.getSession().getAttribute("sessionInfo")!=null){
 			//证明不是第一次登陆，直接放行
@@ -207,9 +247,6 @@ public class System_UserAction extends BaseAction{
 				request.getSession().setAttribute("sessionInfo", sessionInfo);
 				//设置sessio生命周期为15分钟
 				request.getSession().setMaxInactiveInterval(15*60);
-				request.setAttribute("newsPlateList", newsPlateService.findAllRootNewsPlate());
-				request.setAttribute("infosList", recruitmentInfoService.getAllRecruitmentInfos(0, 4));
-				request.setAttribute("unitsList", recruitmentUnitService.findAllRecruitmentUnits());
 				return "index";
 			}
 		}

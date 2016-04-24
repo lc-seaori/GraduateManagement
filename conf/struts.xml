@@ -40,6 +40,7 @@
     	<global-results>
 			<result name="noSecurity">/WEB-INF/views/error/noSecurity.jsp</result>
 			<result name="noSession">/WEB-INF/views/error/noSession.jsp</result>
+			<result name="noRescource">/WEB-INF/views/error/404.jsp</result>
 		</global-results> 
     	
     	<!-- 前台首页 -->
@@ -47,6 +48,9 @@
     		<result name="homeIndex">/WEB-INF/views/front/home_index.jsp</result>
     		<result name="login">/WEB-INF/views/login.jsp</result>
     		<result name="backstage">/WEB-INF/views/index.jsp</result>
+    		<result name="nnIndex">/WEB-INF/views/front/nn_index.jsp</result>
+    		<result name="nnList">/WEB-INF/views/front/nn_list.jsp</result>
+    		<result name="nn_content">/WEB-INF/views/front/nn.jsp</result>
     	</action>
     	
     	<!-- 新闻板块管理 -->

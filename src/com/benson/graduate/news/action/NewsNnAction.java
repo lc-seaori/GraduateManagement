@@ -288,13 +288,12 @@ public class NewsNnAction extends BaseAction implements ModelDriven<NewsNn>,Prep
 	public void editSubmit(){
 		Json json=new Json();
 		boolean result = false;
-		System.out.println(model.getCreateName()+","+model.getCoverImg()+","+model.getKeyWords()+","+plateParentId+","+model.getPlateId()+","+model.getSummary()+","+model.getTitle());
+		//时间
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		if("1".equals(isAdd)){
 			//添加
 			model.setPlatePid(plateParentId);
-			//时间
-			Date date = new Date();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			model.setCreateTime(sdf.format(date));
 			result = newsNnService.insertNewsNn(model);
 		}else{
@@ -302,6 +301,7 @@ public class NewsNnAction extends BaseAction implements ModelDriven<NewsNn>,Prep
 				//没有上传图片
 				model.setCoverImg(oldImgName);
 			}
+			model.setCreateTime(sdf.format(date));
 			result = newsNnService.updateNewsNn(model);
 		}
 		json.setSuccess(result);

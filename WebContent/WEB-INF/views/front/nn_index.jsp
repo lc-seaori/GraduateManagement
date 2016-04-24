@@ -30,32 +30,51 @@ $(function(){
 <body>
 <%@include file="top2.jsp" %>
 <div class="main">
-  	<div class="t3"><div class="p_nav">首页<i>&gt;</i>课程</div><span>课程</span></div>
+	<input type="hidden" id="whatType" name="whatType" value="${whatType}"/>
+  	<div class="t3"><div class="p_nav">首页<i>&gt;</i>新闻</div><span>新闻</span></div>
     <div class="filter">
     	<dl id="dl-query1" class="f1">
-    		<dt>课程分类：</dt>
+    		<dt>新闻分类：</dt>
+    		<c:if test="${whatType == 'platesType'}">
     		<c:choose>
-    		<c:when test="${empty groupId}">
-    			<dd id="type-0" class="cur" onclick="selectquerytype(0)">全部新闻</dd>
-    			<c:forEach items="${groupList}" var="group">
-	    			<dd id="type-${group.groupId}" onclick="selectquerytype('${group.groupId}')">${group.groupName}</dd>
-	    		</c:forEach>
-    		</c:when>
-    		<c:otherwise>
-    			<dd id="type-0" onclick="selectquerytype(0)">全部新闻</dd>
-    			<c:forEach items="${groupList}" var="group">
-	    			<dd id="type-${group.groupId}" <c:if test="${group.groupId == groupId}">class="cur"</c:if> onclick="selectquerytype('${group.groupId}')">${group.groupName}</dd>
-	    		</c:forEach>
-	    	</c:otherwise>
+	    		<c:when test="${empty plateId}">
+	    			<dd id="type-0" class="cur" onclick="selectquerytype(0)">全部新闻</dd>
+	    			<c:forEach items="${eachList}" var="plates">
+		    			<dd id="type-${plates.id}" onclick="selectquerytype('${plates.id}')">${plates.plateName}</dd>
+		    		</c:forEach>
+	    		</c:when>
+	    		<c:otherwise>
+	    			<dd id="type-0" onclick="selectquerytype(0)">全部新闻</dd>
+	    			<c:forEach items="${eachList}" var="plates">
+		    			<dd id="type-${plates.id}" <c:if test="${plates.id == plateId}">class="cur"</c:if> onclick="selectquerytype('${plates.id}')">${plates.plateName}</dd>
+		    		</c:forEach>
+		    	</c:otherwise>
     		</c:choose>
+    		</c:if>
+    		<c:if test="${whatType == 'newsType'}">
+    		<c:choose>
+	    		<c:when test="${empty plateId}">
+	    			<dd id="type-0" class="cur" onclick="selectquerytype(0)">全部新闻</dd>
+	    			<c:forEach items="${eachList}" var="newsType">
+		    			<dd id="type-${newsType.id}" onclick="selectquerytype('${newsType.id}')">${newsType.name}</dd>
+		    		</c:forEach>
+	    		</c:when>
+	    		<c:otherwise>
+	    			<dd id="type-0" onclick="selectquerytype(0)">全部新闻</dd>
+	    			<c:forEach items="${eachList}" var="newsType">
+		    			<dd id="type-${newsType.id}" <c:if test="${newsType.id == plateId}">class="cur"</c:if> onclick="selectquerytype('${newsType.id}')">${newsType.name}</dd>
+		    		</c:forEach>
+		    	</c:otherwise>
+    		</c:choose>
+    		</c:if>
     	</dl>
     	<dl id="dl-query2" class="f1">
-    		<dt>课程排序：</dt>
+    		<dt>新闻排序：</dt>
     		<dd id="sort-create_time" class="cur" onclick="selectquerysort('create_time')">最新发布</dd>
-    		<dd id="sort-reg_count" onclick="selectquerysort('reg_count')">最多报名</dd>
+    		<dd id="sort-view_count" onclick="selectquerysort('view_count')">最多阅读</dd>
     	</dl>
     </div>
-    <div id="course_list"></div>
+    <div id="nn_list"></div>
 </div>
 <%@ include file="footer.jsp" %>
 </body>

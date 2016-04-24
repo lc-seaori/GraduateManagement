@@ -1,8 +1,10 @@
 package com.benson.graduate.news.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.benson.graduate.base.pagemodel.DataGrid;
+import com.benson.graduate.base.pagemodel.Pager;
 import com.benson.graduate.base.service.BaseService;
 import com.benson.graduate.news.model.NewsNn;
 
@@ -24,6 +26,13 @@ public interface NewsNnService extends BaseService {
 	 * @return
 	 */
 	NewsNn findById(int id);
+	
+	/**
+	 * 根据新闻类型id获取所有该类新闻
+	 * @param enVal
+	 * @return
+	 */
+	List<NewsNn> findByNewsPlateId(int enVal);
 	
 	/**
 	 * 添加实体  hql
@@ -52,4 +61,21 @@ public interface NewsNnService extends BaseService {
 	 * @return
 	 */
 	boolean deleteFile(String path);
+	
+	/**
+	 * 前台新闻分页
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param fieldMap
+	 * @return
+	 */
+	Pager findNewsNnPager(int pageNumber, int pageSize, Map<String, Object> fieldMap);
+	
+	/**
+	 * 查询总数
+	 * @param sql
+	 * @param object
+	 * @return
+	 */
+	long selectCount(String sql, Object...object);
 }

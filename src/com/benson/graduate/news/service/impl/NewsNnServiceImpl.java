@@ -4,10 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
 import com.benson.graduate.base.pagemodel.DataGrid;
+import com.benson.graduate.base.pagemodel.Pager;
 import com.benson.graduate.base.service.impl.BaseServiceImpl;
 import com.benson.graduate.news.dao.NewsNnDao;
 import com.benson.graduate.news.dao.NewsPlateDao;
@@ -138,6 +142,11 @@ public class NewsNnServiceImpl extends BaseServiceImpl implements
 	public NewsNn findById(int id) {
 		return newsNnDao.getEntity(id);
 	}
+	
+	@Override
+	public List<NewsNn> findByNewsPlateId(int enVal){
+		return newsNnDao.findEntityByHQL("from NewsNn n where n.newsType=?", enVal);
+	}
 
 	@Override
 	public boolean insertNewsNn(NewsNn newsNn) {
@@ -190,4 +199,69 @@ public class NewsNnServiceImpl extends BaseServiceImpl implements
 		return file.delete();
 	}
 
+	@Override
+	public Pager findNewsNnPager(int pageNumber, int pageSize, Map<String, Object> fieldMap) {
+		StringBuffer condition = new StringBuffer();
+		StringBuffer hqlCondition = new StringBuffer();
+		List<Object> params = new ArrayList<Object>();
+		
+		String sort = CastUtil.castString(fieldMap.get("sort"));
+		if(StringUtil.isEmpty(sort)){
+			sort = " create_time desc ";
+		}else{
+			sort += " desc ";
+		}
+		
+		condition.append(" 1 = 1");
+		hqlCondition.append(" 1 = 1");
+		
+		String platePid = CastUtil.castString(fieldMap.get("platePid"));
+		if(StringUtil.isNotEmpty(platePid)){
+			condition.append(" and plate_pid = ?");
+			hqlCondition.append(" and nn.platePid = ?");
+			params.add(CastUtil.castInt(platePid));
+		}
+		
+		String newsType = CastUtil.castString(fieldMap.get("newsType"));
+		if(StringUtil.isNotEmpty(newsType)){
+			condition.append(" and news_type = ?");
+			hqlCondition.append(" and nn.newsType = ?");
+			params.add(CastUtil.castInt(newsType));
+		}
+		
+		long nnCount = selectCount("select count(*) from NewsNn nn where"+hqlCondition.toString(), params.toArray());
+		
+		//分页设置
+		if(pageSize<1){
+			pageSize=10;
+		}
+		//总页数
+		long pageCount= nnCount%pageSize==0? nnCount/pageSize : nnCount/pageSize+1;
+		if(pageNumber>pageCount){
+			pageNumber=CastUtil.castInt(pageCount);
+		}
+		//避免查询总数为0的时候，页码也为0
+		if (pageNumber <= 0) {
+			pageNumber = 1;
+		}
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from news_nn where");
+		sql.append(condition);
+		sql.append(" order by ").append(sort);
+		sql.append(" limit ").append((pageNumber-1)*pageSize).append(",").append(pageSize);
+		
+		List<NewsNn> nnList = newsNnDao.findEntityListBySql(sql.toString(), params.toArray());
+		return new Pager(pageNumber, pageSize, nnCount, nnList);
+	}
+
+	@Override
+	public long selectCount(String sql, Object... objects) {
+		try {
+			return newsNnDao.getNewsNnCount(sql, objects);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }

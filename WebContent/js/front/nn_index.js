@@ -21,17 +21,18 @@ window.coursePageList = function(pageNumber , typeVal , sortVal) {
 	var params = {
 		'pageNumber': pageNumber,
 		'pageSize': 5,
-		'groupId' : typeVal,
-		'sort' : sortVal
+		'plateId' : typeVal,
+		'sort' : sortVal,
+		'whatType' : $('#whatType').val()
 	};
 
 	$.ajax({
 		type: 'POST',
-		url: BASE + '/sys/enterprise/course/page/' + coId,
+		url: 'front_no_nnlist',
         data: params,
         dataType: 'html',
         success: function(data) {
-            $('#course_list').html(data);
+            $('#nn_list').html(data);
         }
 	});
 };

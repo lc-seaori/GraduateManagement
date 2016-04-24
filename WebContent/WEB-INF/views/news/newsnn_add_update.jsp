@@ -230,7 +230,8 @@
 		    	function(data){
 		    		var result=eval("("+data+")");
 		    		if (result.success){
-					   	$.messager.alert("操作提示", "操作成功",'info');   
+					   	$.messager.alert("操作提示", "操作成功",'info');  
+					   	$('#newsNnList').datagrid('clearSelections');
 					   	$('#newsNnList').datagrid('reload');
 					   	closeTab(getCurrentTab());
 					}else{

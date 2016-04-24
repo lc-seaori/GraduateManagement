@@ -26,7 +26,7 @@
 <style type="text/css">
 	.nn_tool{ float:right;}
 	.nn_tool li { height:24px; line-height:24px; float:right; margin-left:10px; cursor:pointer;}
-	.nn_tool li i{ float:left; width:24px; height:24px;background-image:url(<%=contextPath%>/css/images/enterprise/icon.gif); margin-right:6px; display:inline;}
+	.nn_tool li i{ float:left; width:24px; height:24px;background-image:url(<%=contextPath%>/css/images/icon.gif); margin-right:6px; display:inline;}
 	.video-comments a{color: #999;}
 	.video-comments a:hover{color: #333;}
 	.video-comments a:visited{color: #999;}
@@ -36,18 +36,18 @@
 </head>
 <body>
 </body>
-<%@ include file="top.jsp" %>
+<%@ include file="top2.jsp" %>
 <div class="main">
-  	<div class="t2"><div class="p_nav">首页<i>&gt;</i>学院新闻<i>&gt;</i>正文</div><span>学院新闻<i>&gt;</i>正文</span></div>
+  	<div class="t2"><div class="p_nav">首页<i>&gt;</i>新闻<i>&gt;</i>正文</div><span>新闻<i>&gt;</i>正文</span></div>
   	<div>
-    	<h1>${nn.title }</h1>
-        <div class="author"><i>${nn.createName }</i> 发表于 ${nn.createTime } &nbsp;&nbsp; 关键字：${nn.keyWords } &nbsp;&nbsp; ${nn.viewCount }次浏览
+    	<h1>${newsNn.title }</h1>
+        <div class="author"><i>${newsNn.createName }</i> 发表于 ${newsNn.createTime } &nbsp;&nbsp; 关键字：${newsNn.keyWords } &nbsp;&nbsp; ${newsNn.viewCount }次浏览
         <ul class="nn_tool">
-    		<li class="video-comments"><a href="javascript:void(0)"><i class="i1"></i>评论（0）</a></li>
+    		<li class="video-comments"><a href="javascript:void(0)"><i class="i1"></i>阅读（${newsNn.viewCount}）</a></li>
     	</ul>
         </div>
-        <div class="news_summary"><span>[摘要]</span>${nn.summary}</div>
-        <div class="news_txt">${nn.content}</div>
+        <div class="news_summary"><span>[摘要]</span>${newsNn.summary}</div>
+        <div class="news_txt">${newsNn.content}</div>
     </div>
 </div>
 <%@ include file="footer.jsp" %>

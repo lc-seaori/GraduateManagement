@@ -19,12 +19,11 @@
     <div class="navbg">
 	    <ul class="list">
           <li><a href="front_toHomeIndex">首页</a></li>
-          <li><a href="/sys/enterprise/train/">招聘公司</a></li>
-          <li><a href="/sys/enterprise/nn/list/e53cde01cc854e67b9364c60fd0134be/4">招聘信息</a></li>
-          <li><a href="/sys/enterprise/nn/list/2c249de2b7124e4dbd8e9847825d4892/8">宣讲会</a></li>
-          <li><a href="/sys/enterprise/nn/list/ba537e50a33c4857a89bb8796dba3998/6">政策法规</a></li>
-          <li><a href="/sys/enterprise/nn/list/f6730827529647c1aa2e58572610feb9/7">通知公告</a></li>
-          <li><a href="/sys/enterprise/about/">最新动态</a></li>
+          <li><a href="javascript:void(0)">招聘公司</a></li>
+          <li><a href="javascript:void(0)">招聘信息</a></li>
+          <c:forEach items="${newsTypeList}" var="newsType">
+          	<li><a href="front_no_nnTypeIndex?plateId=${newsType.id}">${newsType.name}</a></li>
+          </c:forEach>
           <li><a href="#">联系我们</a></li>
         </ul>
 	</div>

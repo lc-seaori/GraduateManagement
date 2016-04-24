@@ -148,6 +148,11 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	public int executeSql(String sql, Object... objects) {
 		// TODO Auto-generated method stub
 		SQLQuery q = this.getSession().createSQLQuery(sql);
+		if(objects!=null){
+			for(int i=0;i<objects.length;i++){
+				q.setParameter(i, objects[i]);
+			}
+		}
 		return q.executeUpdate();
 	}
 

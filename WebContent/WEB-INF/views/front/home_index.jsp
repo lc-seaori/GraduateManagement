@@ -62,26 +62,11 @@
 		</div>
 		<div id="full-screen-slider">
 			<ul id="slides">
-				<li style="background:url('<%=contextPath%>/css/images/front_slider_6.jpg') no-repeat top center"></li>
-				<li style="background:url('<%=contextPath%>/css/images/front_slider_2.jpg') no-repeat top center"></li>
-				<li style="background:url('<%=contextPath%>/css/images/front_slider_3.jpg') no-repeat top center"></li>
-				<li style="background:url('<%=contextPath%>/css/images/front_slider_4.jpg') no-repeat top center"></li>
+				<li style="background:url('<%=contextPath%>/css/images/front_slider_1.jpg') no-repeat top center"></li>
+				<li style="background:url('<%=contextPath%>/css/images/front_slider_8.jpg') no-repeat top center"></li>
 				<li style="background:url('<%=contextPath%>/css/images/front_slider_5.jpg') no-repeat top center"></li>
-				<%-- <c:if test="${not empty co.coSlidesImg1 }">
-				  <li style="background:url(/Rec/coImg/${co.coSlidesImg1}) no-repeat top center"></li>
-				</c:if>
-				<c:if test="${not empty co.coSlidesImg2 }">
-				  <li style="background:url(/Rec/coImg/${co.coSlidesImg2}) no-repeat top center"></li>
-				</c:if>
-				<c:if test="${not empty co.coSlidesImg3 }">
-				  <li style="background:url(/Rec/coImg/${co.coSlidesImg3}) no-repeat top center"></li>
-				</c:if>
-				<c:if test="${not empty co.coSlidesImg4 }">
-				  <li style="background:url(/Rec/coImg/${co.coSlidesImg4}) no-repeat top center"></li>
-				</c:if>
-				<c:if test="${not empty co.coSlidesImg5 }">
-				  <li style="background:url(/Rec/coImg/${co.coSlidesImg5}) no-repeat top center"></li>
-				</c:if> --%>
+				<li style="background:url('<%=contextPath%>/css/images/front_slider_10.jpg') no-repeat top center"></li>
+				<li style="background:url('<%=contextPath%>/css/images/front_slider_11.jpg') no-repeat top center"></li>
 			</ul>
 		</div>
 	</div>
@@ -98,36 +83,36 @@
 	    	</c:forEach>
 	    </ul>
    </div>
-  <div class="news_main" >
-	  <dl class="picnews">
-	  	<c:forEach items="${platesList}" var="plate">
-	  		<c:if test="${plate.plateId == '2c249de2b7124e4dbd8e9847825d4892'}">
-		  	<dt>${plate.plateName}</dt>
+	<div class="news_main" >
+		<dl class="picnews">
+			<c:forEach items="${newsTypeList}" var="enumVal">
+			<c:if test="${enumVal.id == 15001}">
+			<dt>${enNameMap[enumVal.id]}</dt>
 		    <dd id="hotpic">
-		    	<c:if test="${empty nnBeanMap[plate.plateId]}">
-	    			 <div id="NewsPicTxt" ><a target="_blank" href="#">暂无图片新闻</a></div>
+		    	<c:if test="${empty nnMap[enumVal.id]}">
+	    			 <div id="NewsPicTxt" ><a target="_blank" href="javascript:void(0)">暂无图片新闻</a></div>
 	    		</c:if>
 	    		<div id="NewsPic">
-	    			<c:forEach items="${nnBeanMap[plate.plateId]}" var="nn">
-			            <a target="_blank" href="/sys/enterprise/nn/${nn.nn.nnId }/8"><img width="368px" height="184px" src="${nn.thumbnail}" title="${nn.nn.title}" /></a>
+	    			<c:forEach items="${nnMap[enumVal.id]}" var="nn" begin="0" end="3">
+			            <a target="_blank" href="front_no_nnContent?newsNnId=${nn.id}"><img width="368px" height="184px" src="<%=contextPath%>/uploadImg/${nn.coverImg}" title="${nn.title}"/></a>
 		            </c:forEach>
 		            <div class="Nav">
-		            	<c:forEach items="${nnBeanMap[plate.plateId]}" var="nn" varStatus="i">
+		            	<c:forEach items="${nnMap[enumVal.id]}" var="news" varStatus="i"  begin="0" end="3">
 			                <span <c:choose>
 			                	<c:when test="${i.index == 0}">class="Cur"</c:when>
 			                	<c:otherwise>class="Normal"</c:otherwise>
-			                </c:choose>>${ fn:length(nnBeanMap[plate.plateId]) - i.index }</span>
+			                </c:choose>>${ fn:length(nnMap[enumVal.id]) - i.index }</span>
 			            </c:forEach>
 		            </div>
 		        </div>
-		        <c:if test="${not empty nnBeanMap[plate.plateId]}">
-			        <c:forEach items="${nnBeanMap[plate.plateId]}" var="nn" begin="${fn:length(nnBeanMap[plate.plateId])-1}" end="${fn:length(nnBeanMap[plate.plateId])-1}">
-			        	<div id="NewsPicTxt" ><a target="_blank" href="/sys/enterprise/nn/${nn.nn.nnId }/8">${nn.nn.title}</a></div>
+		        <c:if test="${not empty nnMap[enumVal.id]}">
+			        <c:forEach items="${nnMap[enumVal.id]}" var="nn" begin="${fn:length(nnMap[enumVal.id])-1}" end="${fn:length(nnMap[enumVal.id])-1}">
+			        	<div id="NewsPicTxt" ><a target="_blank" href="front_no_nnContent?newsNnId=${nn.id}">${nn.title}</a></div>
 			        </c:forEach>
 		        </c:if>
-		      </dd>
-		      </c:if>
-	     </c:forEach>
+			</dd>
+			</c:if>
+			</c:forEach>
 	    </dl>
      <script type="text/javascript">
         $('#hotpic').liteNav(5000);
@@ -147,126 +132,81 @@
 </div>
 
 <div class="news">
-	<c:forEach items="${platesList}" var="plate">
-		<c:if test="${plate.plateId == 'f6730827529647c1aa2e58572610feb9'}">
-		  <div class="t1"><a href="/sys/enterprise/nn/list/${co.coId}/f6730827529647c1aa2e58572610feb9/7">更多&gt;&gt;</a><span>${plate.plateName}</span></div>
+	<c:forEach items="${newsTypeList}" var="enumVal">
+	<c:if test="${enumVal.id == 15005}">
+		<div class="t1"><a href="front_no_nnTypeIndex?plateId=${enumVal.id}">更多&gt;&gt;</a><span>${enumVal.name}</span></div>
 		  <ul>
-		  	<c:if test="${empty nnBeanMap[plate.plateId]}">
-		  		&nbsp;&nbsp;&nbsp;暂无电子杂志！
+		  	<c:if test="${empty nnMap[enumVal.id]}">
+		  		&nbsp;&nbsp;&nbsp;暂无最新动态！
 	    	</c:if>
-	    	<c:forEach items="${nnBeanMap[plate.plateId]}" var="nn" begin="0" end="1">
-	    		<li> <a href="/sys/enterprise/nn/${nn.nn.nnId }/7" class="news_img"><img src="${nn.thumbnail}"/></a>
-			      <h4><a href="/sys/enterprise/nn/${nn.nn.nnId }/7">${nn.nn.title}</a></h4>
-			      <span><em>${nn.nn.userName}</em> 发布于 ${fn:substring(nn.nn.createTime,0,10)}  &nbsp;&nbsp;&nbsp;&nbsp;<em>${nn.commentCount}</em>条评论</span>
-			      <p>${fn:substring(nn.nn.summary,0,46)}...</p>
+	    	<c:forEach items="${nnMap[enumVal.id]}" var="news" begin="0" end="1">
+	    		<li> <a href="front_no_nnContent?newsNnId=${news.id}" class="news_img"><img src="<%=contextPath%>/uploadImg/${news.coverImg}"/></a>
+			      <h4><a href="front_no_nnContent?newsNnId=${news.id}">${news.title}</a></h4>
+			      <span><em>${news.createName}</em> 发布于 ${news.createTime}  &nbsp;&nbsp;&nbsp;&nbsp;<em>${news.viewCount}</em>人阅读</span>
+			      <p>${fn:substring(news.summary,0,46)}...</p>
 			    </li>
 	    	</c:forEach>
 		  </ul>
-		</c:if>
+	</c:if>
 	</c:forEach>
 </div>
 <div class="w_1220">
-  <div class="t1"><a href="${BASE}/sys/enterprise/live/More/1/" target="_blank">更多&gt;&gt;</a><span>直播推荐</span></div>
-  <ul class="live_list">
-    <c:if test="${fn:length(liveList) eq 0}"><span class="no_live">暂无直播！</span></c:if>
-    <c:forEach var="live" items="${liveList}" varStatus="i" begin="0" end="7">
-    	<c:choose>
-    		<c:when test="${live.liveFlag eq 0}">
-    			<li>
-    				<c:choose>
-    					<c:when test="${live.payType eq 'VIP'}">
-    						<span class="vip_tag"></span>
-    					</c:when>
-    					<c:when test="${live.payType eq 'PAY'}">
-    						<span class="price_tag">￥${live.payMoney}</span>
-    					</c:when>
-    				</c:choose>
-    				<a href="/sys/live/play/pc/${live.liveId}/0/${live.coId}" target="_blank">
-	    				<div class="live_img"><span>${live.liveStart} - ${fn:substring(live.liveEnd,11,16)}</span>
-		    				<c:choose>
-		    					<c:when test="${not empty live.cfgBackgroundImg1 }"><img src="/Rec/coImg/${live.cfgBackgroundImg1}" alt="" width="230" height="130"/></c:when>
-		    					<c:otherwise><img src="/www/images/enterprise/live.jpg" alt="" width="230" height="130"/></c:otherwise>
-		    				</c:choose>
-	    				</div>
-    					<p class="live_tit">${live.liveName}</p><p class="live_btn"><i></i>预约直播</p>
-    				</a>
-    			</li>
-    		</c:when>
-    		<c:when test="${live.liveFlag eq 1}">
-    			<li class="live1">
-    			<c:choose>
-   					<c:when test="${live.payType eq 'VIP'}">
-   						<span class="vip_tag"></span>
-   					</c:when>
-   					<c:when test="${live.payType eq 'PAY'}">
-   						<span class="price_tag">￥${live.payMoney}</span>
-   					</c:when>
-   				</c:choose>
-    			<a href="/sys/live/play/pc/${live.liveId}/0/${live.coId}" target="_blank">
-    			<div class="live_img"><span>${live.liveStart} - ${fn:substring(live.liveEnd,11,16)}</span>
-    			<c:choose>
-    				<c:when test="${not empty live.cfgBackgroundImg1 }"><img src="/Rec/coImg/${live.cfgBackgroundImg1}" alt="" width="230" height="130"/></c:when>
-    				<c:otherwise><img src="/www/images/enterprise/live.jpg" alt="" width="230" height="130"/></c:otherwise>
-    			</c:choose>
-    			</div><p class="live_tit" href="#">${live.liveName}</p><p class="live_btn"><i></i>观看直播</p></a>
-    			</li>
-    		</c:when>
-    		<c:when test="${live.liveFlag eq 2}">
-    			<li class="live0">
-    			<c:choose>
-    					<c:when test="${live.payType eq 'VIP'}">
-    						<span class="vip_tag"></span>
-    					</c:when>
-    					<c:when test="${live.payType eq 'PAY'}">
-    						<span class="price_tag">￥${live.payMoney}</span>
-    					</c:when>
-    				</c:choose>
-    			<a href="/ybolo/album/${live.liveId}" target="_blank">
-    			<div class="live_img"><span>${live.liveStart} - ${fn:substring(live.liveEnd,11,16)}</span>
-    		    <c:choose>
-    				<c:when test="${not empty live.cfgBackgroundImg1 }"><img src="/Rec/coImg/${live.cfgBackgroundImg1}" alt="" width="230" height="130"/></c:when>
-    				<c:otherwise><img src="/www/images/enterprise/live.jpg" alt="" width="230" height="130"/></c:otherwise>
-    			</c:choose>
-    		</div><p class="live_tit" href="#">${live.liveName}</p><p class="live_btn"><i></i>精彩回放</p></a></li>
-    		</c:when>
-    	</c:choose>
+	<c:forEach items="${newsTypeList}" var="enumVal">
+	<c:if test="${enumVal.id == 15002}">
+	  <div class="t1"><a href="front_no_nnTypeIndex?plateId=${enumVal.id}" target="_blank">更多&gt;&gt;</a><span>宣讲会</span></div>
+	  <ul class="live_list">
+		<c:if test="${empty nnMap[enumVal.id]}"><span class="no_live">暂无宣讲会信息！</span></c:if>
+		<c:forEach items="${nnMap[enumVal.id]}" var="news" begin="0" end="4">
+		<li class="live1">
+  			<span class="vip_tag"></span>
+   			<a href="front_no_nnContent?newsNnId=${news.id}" target="_blank">
+   			<div class="live_img"><span>${news.createTime}</span>
+   			<c:choose>
+   				<c:when test="${not empty news.coverImg }"><img src="<%=contextPath%>/uploadImg/${news.coverImg}" alt="" width="230" height="130"/></c:when>
+   				<c:otherwise><img src="<%=contextPath%>/css/images/live.jpg" alt="" width="230" height="130"/></c:otherwise>
+   			</c:choose>
+   			</div><p class="live_tit" href="front_no_nnContent?newsNnId=${news.id}">${news.title}</p><p class="live_btn"><i></i>阅读宣讲会信息</p></a>
+   		</li>
+   		</c:forEach>
+	  </ul>
+	  </c:if>
 	</c:forEach>
-  </ul>
   <div class="clear"></div>
 </div>
 
 <div class="whitebg">
   <div class="w_1220">
-    <div class="t1"><a href="/sys/enterprise/train/" target="_blank">更多&gt;&gt;</a>
+    <div class="t1"><a href="no_nnTypeIndex" target="_blank">更多&gt;&gt;</a>
       <dl>
-        <dt>在线培训</dt>
-        <dd>
-	        <c:forEach items="${groupList}" var="group" varStatus="i">
-	        	<c:if test="${i.index > 0}">/</c:if><a href="/sys/enterprise/train/${co.coId}/${group.groupId}" target="_blank">${group.groupName}</a>
-	        </c:forEach>
-        </dd>
+        <dt>通知公告</dt>
       </dl>
     </div>
     <dl class="t_1v8">
-      <dt><a href="/sys/enterprise/train/" target="_blank"><img src="/www/templet/pc/skin4/images/t1.jpg"/></a></dt>
+    	<c:forEach items="${newsTypeList}" var="enumVal">
+		<c:if test="${enumVal.id == 15003}">
+      <dt><a href="front_no_nnTypeIndex?plateId=${enumVal.id}" target="_blank"><img src="<%=contextPath%>/css/images/left_notice.jpg"/></a></dt>
       <dd>
         <ul class="video_list">
-          <c:forEach items="${courseList}" var="course" varStatus="i">
-          	<c:if test="${empty courseList}">
-          		&nbsp;&nbsp;&nbsp;暂无培训视频信息！
-          	</c:if>
-          	<li><a href="${BASE}/sys/enterprise/train/info/${course.courseId}/${co.coId}" target="_blank">
-            <div class="video_img"><img src="${course.headImg}"/></div>
-            <p>${course.courseName}</p>
-            <span class="time"><i></i>${fn:substring(course.createTime,0,10)}</span></a></li>
-          </c:forEach>
+          <c:if test="${empty nnMap[enumVal.id]}"><span class="no_live">&nbsp;&nbsp;&nbsp;暂无通知公告！</span></c:if>
+			<c:forEach items="${nnMap[enumVal.id]}" var="news" begin="0" end="5">
+	          	<li><a href="front_no_nnContent?newsNnId=${news.id}" target="_blank">
+	            <div class="video_img">
+	            	<c:choose>
+		   				<c:when test="${not empty news.coverImg }"><img src="<%=contextPath%>/uploadImg/${news.coverImg}"/></c:when>
+		   				<c:otherwise><img src="<%=contextPath%>/css/images/news_default.png"/></c:otherwise>
+		   			</c:choose>
+	            </div>
+	            <p>${news.title}</p>
+	            <span class="time"><i></i>${news.createTime}</span></a></li>
+            </c:forEach>
         </ul>
       </dd>
+      </c:if>
+      </c:forEach>
     </dl>
   </div>
 </div>
 <%@ include file="footer.jsp" %>
-<%-- <script type="text/javascript" src="${BASE}/www/js/system/enterprise/jquery.qrcode.min.js"></script> --%>
 <script type="text/javascript">  
   $(function(){
 		window.onload = function()
@@ -284,8 +224,6 @@
 				$ul_c.eq($t_c).css('display','block');
          	})
 		}
-		/* var mode = !!document.createElement('canvas').getContext ? 'canvas' : 'table';
-		$('#share-qrcode').qrcode({render:mode,width:200,height:200,correctLevel:0,text:"http://scu.ybolo.cn/wx/mooc?cmd=10000&coId=${co.coId}"}); */
 	});
   
 function logout(){
