@@ -114,9 +114,9 @@
 			</c:if>
 			</c:forEach>
 	    </dl>
-     <script type="text/javascript">
-        $('#hotpic').liteNav(5000);
-    </script>
+	     <script type="text/javascript">
+	        $('#hotpic').liteNav(5000);
+	    </script>
       <div class="center">
 	        <h3><a href="/sys/enterprise/nn/list/e53cde01cc854e67b9364c60fd0134be/4">更多&gt;&gt;</a><span>招聘信息</span></h3>
 	        <ul class="new_list">
@@ -176,14 +176,14 @@
 
 <div class="whitebg">
   <div class="w_1220">
-    <div class="t1"><a href="no_nnTypeIndex" target="_blank">更多&gt;&gt;</a>
+  <c:forEach items="${newsTypeList}" var="enumVal">
+	<c:if test="${enumVal.id == 15003}">
+    <div class="t1"><a href="front_no_nnTypeIndex?plateId=${enumVal.id}" target="_blank">更多&gt;&gt;</a>
       <dl>
         <dt>通知公告</dt>
       </dl>
     </div>
     <dl class="t_1v8">
-    	<c:forEach items="${newsTypeList}" var="enumVal">
-		<c:if test="${enumVal.id == 15003}">
       <dt><a href="front_no_nnTypeIndex?plateId=${enumVal.id}" target="_blank"><img src="<%=contextPath%>/css/images/left_notice.jpg"/></a></dt>
       <dd>
         <ul class="video_list">
@@ -201,9 +201,9 @@
             </c:forEach>
         </ul>
       </dd>
-      </c:if>
-      </c:forEach>
     </dl>
+    </c:if>
+      </c:forEach>
   </div>
 </div>
 <%@ include file="footer.jsp" %>
