@@ -2,6 +2,7 @@ package com.benson.graduate.company.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.benson.graduate.base.pagemodel.DataGrid;
+import com.benson.graduate.base.pagemodel.Pager;
 import com.benson.graduate.base.service.impl.BaseServiceImpl;
 import com.benson.graduate.company.dao.RecruitmentUnitDao;
 import com.benson.graduate.company.model.RecruitmentUnit;
@@ -16,6 +18,8 @@ import com.benson.graduate.company.pagemodel.PageRecruitmentUnit;
 import com.benson.graduate.company.service.RecruitmentUnitService;
 import com.benson.graduate.sys.dao.EnumerationValueDao;
 import com.benson.graduate.sys.model.EnumerationValue;
+import com.benson.graduate.utils.CastUtil;
+import com.benson.graduate.utils.StringUtil;
 
 @Service("recruitmentUnitService")
 public class RecruitmentUnitServiceImpl extends BaseServiceImpl implements
@@ -232,5 +236,76 @@ public class RecruitmentUnitServiceImpl extends BaseServiceImpl implements
 			// TODO Auto-generated method stub
 			String hql ="from RecruitmentUnit";
 			return recruitmentUnitDao.findEntityByHQL(hql);
+		}
+
+		@Override
+		public Pager findUnitPager(int pageNumber, int pageSize, Map<String, Object> fieldMap) {
+			StringBuffer condition = new StringBuffer();
+			StringBuffer hqlCondition = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			
+			String sort = CastUtil.castString(fieldMap.get("sort"));
+			if(StringUtil.isEmpty(sort)){
+				sort = " UNIT_NAME desc ";
+			}else{
+				sort += " desc ";
+			}
+			
+			condition.append(" 1 = 1");
+			hqlCondition.append(" 1 = 1");
+			
+			long infoCount = selectCount("select count(*) from RecruitmentUnit unit where"+hqlCondition.toString(), params.toArray());
+			
+			//分页设置
+			if(pageSize<1){
+				pageSize=10;
+			}
+			//总页数
+			long pageCount= infoCount%pageSize==0? infoCount/pageSize : infoCount/pageSize+1;
+			if(pageNumber>pageCount){
+				pageNumber=CastUtil.castInt(pageCount);
+			}
+			//避免查询总数为0的时候，页码也为0
+			if (pageNumber <= 0) {
+				pageNumber = 1;
+			}
+
+			StringBuffer sql = new StringBuffer();
+			sql.append("select * from company_employing_unit where");
+			sql.append(condition);
+			sql.append(" order by ").append(sort);
+			sql.append(" limit ").append((pageNumber-1)*pageSize).append(",").append(pageSize);
+			
+			List<RecruitmentUnit> unitList = recruitmentUnitDao.findEntityListBySql(sql.toString(), params.toArray());
+			return new Pager(pageNumber, pageSize, infoCount, unitList);
+		}
+
+		@Override
+		public long selectCount(String sql, Object... objects) {
+			try {
+				return recruitmentUnitDao.getUnitCount(sql, objects);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+		}
+
+		@Override
+		public PageRecruitmentUnit findPageRecruUnitById(Integer id) {
+			RecruitmentUnit unit = findRecruitmentUnitById(id);
+			PageRecruitmentUnit recru = new PageRecruitmentUnit();
+			BeanUtils.copyProperties(unit, recru);
+			EnumerationValue enumerationValue =null;
+			//转换单位性质字段
+			enumerationValue=enumerationValueDao.getEntity(unit.getUnitType());
+			if(enumerationValue!=null){
+				recru.setUnit(enumerationValue.getName());
+			}
+			//转换招聘方式字段
+			enumerationValue=enumerationValueDao.getEntity(unit.getRecruitmentType());
+			if(enumerationValue!=null){
+				recru.setRecruitment(enumerationValue.getName());
+			}
+			return recru;
 		}
 }

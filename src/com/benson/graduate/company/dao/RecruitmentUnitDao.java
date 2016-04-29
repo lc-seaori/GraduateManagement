@@ -11,7 +11,12 @@ import com.benson.graduate.company.model.RecruitmentUnit;
  *
  */
 public interface RecruitmentUnitDao extends BaseDao<RecruitmentUnit> {
+	
 	public Long getRecruitmentUnitsCount(String hql);
 	
 	public void deleteRecruitmentUnits(List<Integer> ids);
+	
+	long getUnitCount(String hql, Object... objects);
+	
+	List<RecruitmentUnit> findEntityListBySql(String sql, Object... objects) ;
 }

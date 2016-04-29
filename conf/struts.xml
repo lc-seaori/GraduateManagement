@@ -21,7 +21,7 @@
 				<interceptor-ref name="myStack"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="sessionInterceptor">
-					<param name="excludeMethods">doNotNeedSession_*</param>
+					<param name="excludeMethods">doNotNeedSession_*,no_*</param>
 				</interceptor-ref>
 			</interceptor-stack>
 			<!-- 权限拦截器 -->
@@ -29,7 +29,7 @@
 			<interceptor-stack name="authStack">
 				<interceptor-ref name="sessionStack"></interceptor-ref>
 				<interceptor-ref name="authInterceptor">
-					<param name="excludeMethods">doNotNeedSession_*,doNotNeedAuth_*</param>
+					<param name="excludeMethods">doNotNeedSession_*,doNotNeedAuth_*,no_*</param>
 				</interceptor-ref>
 			</interceptor-stack>
     	</interceptors>
@@ -50,7 +50,10 @@
     		<result name="backstage">/WEB-INF/views/index.jsp</result>
     		<result name="nnIndex">/WEB-INF/views/front/nn_index.jsp</result>
     		<result name="nnList">/WEB-INF/views/front/nn_list.jsp</result>
-    		<result name="nn_content">/WEB-INF/views/front/nn.jsp</result>
+    		<result name="nnContent">/WEB-INF/views/front/nn.jsp</result>
+    		<result name="infoIndex">/WEB-INF/views/front/info_index.jsp</result>
+    		<result name="infoList">/WEB-INF/views/front/info_list.jsp</result>
+    		<result name="infoContent">/WEB-INF/views/front/info.jsp</result>
     	</action>
     	
     	<!-- 新闻板块管理 -->

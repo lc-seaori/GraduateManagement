@@ -1,8 +1,10 @@
 package com.benson.graduate.company.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.benson.graduate.base.pagemodel.DataGrid;
+import com.benson.graduate.base.pagemodel.Pager;
 import com.benson.graduate.base.service.BaseService;
 import com.benson.graduate.company.model.RecruitmentInfo;
 import com.benson.graduate.company.pagemodel.PageRecruitmentInfo;
@@ -50,5 +52,29 @@ public interface RecruitmentInfoService extends BaseService {
 	 * 根据招聘单位id和发布时间查找所有的招聘信息
 	 */
 	public List<RecruitmentInfo> getAllRecruitmentInfos(Integer recUnitId,Integer timeId);
+	
+	/**
+	 * 前台招聘信息分页
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param fieldMap
+	 * @return
+	 */
+	Pager findInfoPager(int pageNumber, int pageSize, Map<String, Object> fieldMap);
+	
+	/**
+	 * 查询总数
+	 * @param sql
+	 * @param object
+	 * @return
+	 */
+	long selectCount(String sql, Object...object);
+	
+	/**
+	 * 查招聘信息页面实体
+	 * @param id
+	 * @return
+	 */
+	PageRecruitmentInfo findPageRecruInfoById(Integer id);
 	
 }

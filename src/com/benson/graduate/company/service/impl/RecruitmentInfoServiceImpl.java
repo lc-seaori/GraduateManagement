@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -11,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.benson.graduate.base.pagemodel.DataGrid;
+import com.benson.graduate.base.pagemodel.Pager;
 import com.benson.graduate.base.service.impl.BaseServiceImpl;
 import com.benson.graduate.company.dao.RecruitmentInfoDao;
 import com.benson.graduate.company.dao.RecruitmentUnitDao;
@@ -21,6 +23,8 @@ import com.benson.graduate.company.service.RecruitmentInfoService;
 import com.benson.graduate.stu.pagemodel.PageGraduateInfo;
 import com.benson.graduate.sys.dao.EnumerationValueDao;
 import com.benson.graduate.sys.model.EnumerationValue;
+import com.benson.graduate.utils.CastUtil;
+import com.benson.graduate.utils.StringUtil;
 
 @Service("recruitmentInfoService")
 public class RecruitmentInfoServiceImpl extends BaseServiceImpl implements
@@ -95,7 +99,7 @@ public class RecruitmentInfoServiceImpl extends BaseServiceImpl implements
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			pageInfo.setUnitName(info.getRecruitmentUnit().getUnitName());
 			recruitmentInfos.add(pageInfo);
 		}
 		return recruitmentInfos;
@@ -416,5 +420,103 @@ public class RecruitmentInfoServiceImpl extends BaseServiceImpl implements
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public Pager findInfoPager(int pageNumber, int pageSize, Map<String, Object> fieldMap) {
+		StringBuffer condition = new StringBuffer();
+		StringBuffer hqlCondition = new StringBuffer();
+		List<Object> params = new ArrayList<Object>();
+		
+		String sort = CastUtil.castString(fieldMap.get("sort"));
+		if(StringUtil.isEmpty(sort)){
+			sort = " RELEASE_TIME desc ";
+		}else{
+			sort += " desc ";
+		}
+		
+		condition.append(" 1 = 1");
+		hqlCondition.append(" 1 = 1");
+		
+		long infoCount = selectCount("select count(*) from RecruitmentInfo info where"+hqlCondition.toString(), params.toArray());
+		
+		//分页设置
+		if(pageSize<1){
+			pageSize=10;
+		}
+		//总页数
+		long pageCount= infoCount%pageSize==0? infoCount/pageSize : infoCount/pageSize+1;
+		if(pageNumber>pageCount){
+			pageNumber=CastUtil.castInt(pageCount);
+		}
+		//避免查询总数为0的时候，页码也为0
+		if (pageNumber <= 0) {
+			pageNumber = 1;
+		}
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from company_recruitment_info where");
+		sql.append(condition);
+		sql.append(" order by ").append(sort);
+		sql.append(" limit ").append((pageNumber-1)*pageSize).append(",").append(pageSize);
+		
+		List<RecruitmentInfo> infoList = recruitmentInfoDao.findEntityListBySql(sql.toString(), params.toArray());
+		List<PageRecruitmentInfo> pageInfoList =  changeToPageModel(infoList);
+		return new Pager(pageNumber, pageSize, infoCount, pageInfoList);
+	}
+
+	@Override
+	public long selectCount(String sql, Object... objects) {
+		try {
+			return recruitmentInfoDao.getInfoCount(sql, objects);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public PageRecruitmentInfo findPageRecruInfoById(Integer id) {
+		RecruitmentInfo info = findRecruitmentInfoById(id);
+		PageRecruitmentInfo pageInfo = new PageRecruitmentInfo();
+		BeanUtils.copyProperties(info, pageInfo);
+		//开始转换字段
+		//转换月薪范围字段
+		EnumerationValue value=enumerationValueDao.getEntity(info.getMonthlySalary());
+		if(value!=null){
+			pageInfo.setMonthlySalary(value.getName());
+			System.out.println(value.getId()+"   "+value.getName());
+		}
+		//转换工作性质字段
+		value=enumerationValueDao.getEntity(info.getWorkType());
+		if(value!=null){
+			pageInfo.setWorkType(value.getName());
+			System.out.println(value.getId()+"   "+value.getName());
+		}
+		//转换行业领域
+		value=enumerationValueDao.getEntity(info.getIndustryType());
+		if(value!=null){
+			pageInfo.setIndustryType(value.getName());
+			System.out.println(value.getId()+"   "+value.getName()+"  industryType ");
+		}
+		//转换学历要求
+		value=enumerationValueDao.getEntity(info.getEducationType());
+		if(value!=null){
+			pageInfo.setEducationType(value.getName());
+			System.out.println(value.getId()+"   "+value.getName());
+		}
+		//转换发布时间和截止时间
+		Date date1=info.getReleaseTime();
+		Date date2=info.getEndTime();
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			pageInfo.setReleaseTime(dateFormat.format(date1));
+			pageInfo.setEndTime(dateFormat.format(date2));
+			//System.out.println(dateShow);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pageInfo;
 	}
 }

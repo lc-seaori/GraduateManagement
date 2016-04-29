@@ -16,6 +16,8 @@ import com.benson.graduate.base.pagemodel.Pager;
 import com.benson.graduate.base.pagemodel.SessionInfo;
 import com.benson.graduate.common.Constant;
 import com.benson.graduate.common.enumeration.EnumerationType;
+import com.benson.graduate.company.pagemodel.PageRecruitmentInfo;
+import com.benson.graduate.company.pagemodel.PageRecruitmentUnit;
 import com.benson.graduate.company.service.RecruitmentInfoService;
 import com.benson.graduate.company.service.RecruitmentUnitService;
 import com.benson.graduate.news.model.NewsNn;
@@ -65,6 +67,7 @@ public class HomeAction extends BaseAction {
 	private String sort;
 	private String whatType;
 	private String newsNnId;
+	private String recruId;
 	public void setPlateId(String plateId) {
 		this.plateId = plateId;
 	}
@@ -82,6 +85,9 @@ public class HomeAction extends BaseAction {
 	}
 	public void setNewsNnId(String newsNnId) {
 		this.newsNnId = newsNnId;
+	}
+	public void setRecruId(String recruId) {
+		this.recruId = recruId;
 	}
 	
 	//前台首页
@@ -156,7 +162,7 @@ public class HomeAction extends BaseAction {
 	public String no_nnContent(){
 		NewsNn newsNn = newsNnService.findById(CastUtil.castInt(newsNnId));
 		if(newsNn == null){
-			request.setAttribute("msg", "");
+			request.setAttribute("msg", "暂无该新闻！");
 			return "noRescource";
 		}else{
 			List<EnumerationValue> newsTypeList = enumerationValueService.findAllEnumerationValuesByName(EnumerationType.NEWS_TYPE);
@@ -164,7 +170,54 @@ public class HomeAction extends BaseAction {
 			newsNnService.updateNewsNn(newsNn);
 			request.setAttribute("newsTypeList", newsTypeList);
 			request.setAttribute("newsNn", newsNn);
-			return "nn_content";
+			return "nnContent";
+		}
+	}
+	
+	/**
+	 * 招聘信息或者招聘公司信息列表主页
+	 * @return
+	 */
+	public String no_infoIndex(){
+		List<EnumerationValue> newsTypeList = enumerationValueService.findAllEnumerationValuesByName(EnumerationType.NEWS_TYPE);
+		request.setAttribute("newsTypeList", newsTypeList);
+		request.setAttribute("whatType", whatType);
+		return "infoIndex";
+	}
+	
+	/**
+	 * 招聘信息或者招聘公司信息列表
+	 * @return
+	 */
+	public String no_infolist(){
+		System.out.println(pageNumber+","+pageSize+","+whatType);
+		Map<String, Object> fieldMap = new HashMap<String, Object>();
+		Pager infoPager = null;
+		if(Constant.UNIT_TYPE.equals(whatType)){
+			infoPager = recruitmentUnitService.findUnitPager(CastUtil.castInt(pageNumber), CastUtil.castInt(pageSize), fieldMap);
+		}else if(Constant.INFO_TYPE.equals(whatType)){
+			infoPager = recruitmentInfoService.findInfoPager(CastUtil.castInt(pageNumber), CastUtil.castInt(pageSize), fieldMap);
+		}else{
+			infoPager = new Pager();
+		}
+		request.setAttribute("whatType", whatType);
+		request.setAttribute("infoPager", infoPager);
+		return "infoList";
+	}
+	
+	public String no_infoContent(){
+		request.setAttribute("whatType", whatType);
+		if(Constant.UNIT_TYPE.equals(whatType)){
+			PageRecruitmentUnit recru = recruitmentUnitService.findPageRecruUnitById(CastUtil.castInt(recruId));
+			request.setAttribute("recru", recru);
+			return "infoContent";
+		}else if(Constant.INFO_TYPE.equals(whatType)){
+			PageRecruitmentInfo recru = recruitmentInfoService.findPageRecruInfoById(CastUtil.castInt(recruId));
+			request.setAttribute("recru", recru);
+			return "infoContent";
+		}else{
+			request.setAttribute("msg", "暂无该信息！");
+			return "noRescource";
 		}
 	}
 	

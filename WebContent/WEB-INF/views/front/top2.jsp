@@ -19,8 +19,8 @@
     <div class="navbg">
 	    <ul class="list">
           <li><a href="front_toHomeIndex">首页</a></li>
-          <li><a href="javascript:void(0)">招聘公司</a></li>
-          <li><a href="javascript:void(0)">招聘信息</a></li>
+          <li><a href="front_no_infoIndex?whatType=unitType">招聘公司</a></li>
+          <li><a href="front_no_infoIndex?whatType=infoType">招聘信息</a></li>
           <c:forEach items="${newsTypeList}" var="newsType">
           	<li><a href="front_no_nnTypeIndex?plateId=${newsType.id}">${newsType.name}</a></li>
           </c:forEach>

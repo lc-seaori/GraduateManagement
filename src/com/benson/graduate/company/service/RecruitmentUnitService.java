@@ -1,10 +1,13 @@
 package com.benson.graduate.company.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.benson.graduate.base.pagemodel.DataGrid;
+import com.benson.graduate.base.pagemodel.Pager;
 import com.benson.graduate.base.service.BaseService;
 import com.benson.graduate.company.model.RecruitmentUnit;
+import com.benson.graduate.company.pagemodel.PageRecruitmentUnit;
 
 public interface RecruitmentUnitService extends BaseService {
 	/**
@@ -42,5 +45,29 @@ public interface RecruitmentUnitService extends BaseService {
 	 * 查询所有招聘公司单位
 	 */
 	public List<RecruitmentUnit> findAllRecruitmentUnits();
+	
+	/**
+	 * 前台招聘公司信息分页
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param fieldMap
+	 * @return
+	 */
+	Pager findUnitPager(int pageNumber, int pageSize, Map<String, Object> fieldMap);
+	
+	/**
+	 * 查询总数
+	 * @param sql
+	 * @param object
+	 * @return
+	 */
+	long selectCount(String sql, Object...object);
+	
+	/**
+	 * 查询页面模型
+	 * @param id
+	 * @return
+	 */
+	PageRecruitmentUnit findPageRecruUnitById(Integer id);
 	
 }

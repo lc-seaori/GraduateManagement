@@ -73,13 +73,13 @@
 </div>
 <div class="news_cont">
 	<div class="side">
-		<h3><a href="/sys/enterprise/nn/list/ba537e50a33c4857a89bb8796dba3998/6">更多&gt;&gt;</a><span>招聘单位信息</span></h3>
+		<h3><a href="front_no_infoIndex?whatType=unitType">更多&gt;&gt;</a><span>招聘单位信息</span></h3>
 	    <ul class="new_list">
 	    	<c:if test="${empty unitsList}">
    				&nbsp;&nbsp;&nbsp;暂无招聘单位信息！
    			</c:if>
 	    	<c:forEach items="${unitsList}" var="unit" begin="0" end="6">
-	    		<li><a href="/sys/enterprise/nn/6">${unit.unitName}</a></li>
+	    		<li><a href="front_no_infoContent?recruId=${unit.id}&whatType=unitType">${unit.unitName}</a></li>
 	    	</c:forEach>
 	    </ul>
    </div>
@@ -118,13 +118,13 @@
 	        $('#hotpic').liteNav(5000);
 	    </script>
       <div class="center">
-	        <h3><a href="/sys/enterprise/nn/list/e53cde01cc854e67b9364c60fd0134be/4">更多&gt;&gt;</a><span>招聘信息</span></h3>
+	        <h3><a href="front_no_infoIndex?whatType=infoType">更多&gt;&gt;</a><span>招聘信息</span></h3>
 	        <ul class="new_list">
 	        	<c:if test="${empty infosList}">
 	   				&nbsp;&nbsp;&nbsp;暂无招聘信息！
 	   			</c:if>
 	   			<c:forEach items="${infosList}" var="info" begin="0" end="6">
-	   				<li><span>${info.releaseTime}</span><a href="/sys/enterprise/nn/4">${info.recruitmentUnit.unitName}(${info.position})</a></li>
+	   				<li><span>${info.releaseTime}</span><a href="front_no_infoContent?recruId=${info.id}&whatType=infoType">${info.recruitmentUnit.unitName}(${info.position})</a></li>
 	   			</c:forEach>
 	        </ul>
       </div>

@@ -15,4 +15,8 @@ public interface RecruitmentInfoDao extends BaseDao<RecruitmentInfo> {
 	 * 根据id列表删除招聘信息
 	 */
 	public void deleteRecruitmentInfos(List<Integer> ids);
+	
+	long getInfoCount(String hql, Object... objects);
+	
+	List<RecruitmentInfo> findEntityListBySql(String sql, Object... objects);
 }
