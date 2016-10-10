@@ -354,7 +354,7 @@ public class RecruitmentInfoServiceImpl extends BaseServiceImpl implements
 			if(timeId!=0){
 				//判断发布时间id
 				if(timeId==1){
-					//如果是1，则是一天内
+					//如果是1，则是一天内 
 					sql+=" and r.RELEASE_TIME>=date_sub(NOW(),INTERVAL 1 DAY) and r.RELEASE_TIME<NOW()";
 				}else if(timeId==2){
 					//三天内
