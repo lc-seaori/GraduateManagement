@@ -1,4 +1,5 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
+<% String contextPath = request.getContextPath(); %>
 <%@ include file="global.jsp" %>
 <div class="top">
   <div class="top-cont">
